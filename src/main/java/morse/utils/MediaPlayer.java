@@ -23,6 +23,8 @@
  */
 package morse.utils;
 
+import javax.sound.sampled.Clip;
+
 /**
  * Author: Ricky☆. 
  * Starting Date: 02/10/2025.
@@ -32,5 +34,24 @@ package morse.utils;
  * files in the likes of .AIFF, .AU or .WAV formats.
  */
 public class MediaPlayer {
+    /**
+     * Audio Clip that will eventualy be played.
+     */
+    private Clip clip;
     
+    /**
+     * Method to play the audio of a given file.
+     */
+    private void playSound(){
+        // TODO: Write the code that will allow for an audio file to be played.
+    }
+    
+    /**
+     * Method "toString".
+     * @return Object's Definition
+     */
+    @Override
+    public String toString(){
+        return "This object is an instance of the Media Player class.";
+    }
 }
