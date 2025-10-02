@@ -32,5 +32,27 @@ package morse.utils;
  * intervals (dits and dahs).
  */
 public class Timer {
+    /**
+     * Method to introduce the corresponding
+     * delay for a space between chars.
+     */
+    private void charSpaceDelay() throws InterruptedException{
+        Thread.sleep(100);
+    }
     
+    /**
+     * Method to introduce the corresponding
+     * delay for a space between letters.
+     */
+    private void betLetterDelay() throws InterruptedException{
+        Thread.sleep(300);
+    }
+    
+    /**
+     * Method to cause the corresponding
+     * delay for a space between words.
+     */
+    private void betWordDelay() throws InterruptedException{
+        Thread.sleep(700);
+    }
 }
