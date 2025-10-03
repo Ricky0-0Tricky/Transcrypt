@@ -67,6 +67,26 @@ public class MediaPlayer {
     }
     
     /**
+     * Method to resume the audio that was paused.
+     */
+    public void resume() {
+        // Check if the clip isn't null and is actually running
+        if (clip != null && !clip.isRunning()) {
+            clip.start();
+        }
+    }
+    
+    /**
+     * Method to pause the audio that's playing.
+     */
+    public void pause() {
+        // Check if the clip isn't null and is actually running
+        if (clip != null && clip.isRunning()) {
+            clip.stop();
+        }
+    }
+        
+    /**
      * Method to stop the audio that's playing.
      */
     public void stop(){

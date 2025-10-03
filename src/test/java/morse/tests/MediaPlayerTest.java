@@ -85,8 +85,30 @@ public class MediaPlayerTest {
      * @throws Exception Possible Exception
      */
     public void testStop() throws Exception{
-        // Plays an audio file, sleeps for 200 ms and then tries to stop
+        // Plays an audio file, sleeps for 150 ms and then tries to stop
         this.media.playSound(fileNames[0]);
+        Thread.sleep(150);
+        this.media.stop();
+    }
+    
+    /**
+     * Method to test the ability of the Media Player
+     * to pause an active audio file.
+     * @throws Exception Possible Exception
+     */
+    public void testPause() throws Exception{
+        // Plays an audio file then tries to pause
+        this.media.playSound(fileNames[0]);
+        this.media.pause();
+    }
+    
+    /**
+     * Method to test the ability of the Media Player
+     * to resume an inactive audio file.
+     * @throws Exception Possible Exception
+     */
+    public void testResume() throws Exception{
+        // Tries to resume the audio file after 150 ms
         Thread.sleep(150);
         this.media.stop();
     }
@@ -98,6 +120,7 @@ public class MediaPlayerTest {
      */
     public static void main(String[] args) throws Exception {
         MediaPlayerTest test = new MediaPlayerTest();
-        test.testStop();
+        test.testPause();
+        test.testResume();
     }
 }
