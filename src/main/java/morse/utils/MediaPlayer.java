@@ -23,6 +23,10 @@
  */
 package morse.utils;
 
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
 /**
@@ -42,8 +46,24 @@ public class MediaPlayer {
     /**
      * Method to play the audio of a given file.
      */
-    private void playSound(){
-        // TODO: Write the code that will allow for an audio file to be played.
+    public void playSound(String fileName){
+        try {
+            // Obtains the Input Stream from the file and converts it into a buffered one
+            InputStream audioFile = this.getClass().getResourceAsStream("/sounds/" + fileName + ".wav");
+            InputStream bufferedIn = new BufferedInputStream(audioFile);
+            // Gets the Audio Stream from the Buffered Input Stream
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(bufferedIn);
+            // Opens the Clip according to the Audio Stream and plays it
+            clip = AudioSystem.getClip();
+            clip.open(audioStream);
+            clip.start();
+            // Ensures that the audio is played until its very end
+            while (!clip.isRunning()) {
+                Thread.sleep(clip.getMicrosecondLength() / 1000);
+            }
+        } catch (Exception e) {
+            System.out.println("Error while playing the file: " + e.getMessage());
+        }
     }
     
     /**
