@@ -66,7 +66,7 @@ public class MediaPlayerTest {
     }
     
     /**
-     * Method to test the abillity of the Media Player 
+     * Method to test the ability of the Media Player 
      * to play audio from certain predefined files.
      * @throws Exception Possible Exception
      */
@@ -75,7 +75,20 @@ public class MediaPlayerTest {
         for(int i = 0; i < 2; i++){
             System.out.println("Currently playing the " + fileNames[i] + " audio file...");
             this.media.playSound(fileNames[i]);
+            Thread.sleep(500);
         }
+    }
+    
+    /**
+     * Method to test the ability of the Media Player
+     * to stop an active audio file.
+     * @throws Exception Possible Exception
+     */
+    public void testStop() throws Exception{
+        // Plays an audio file, sleeps for 200 ms and then tries to stop
+        this.media.playSound(fileNames[0]);
+        Thread.sleep(150);
+        this.media.stop();
     }
     
     /**
@@ -85,6 +98,6 @@ public class MediaPlayerTest {
      */
     public static void main(String[] args) throws Exception {
         MediaPlayerTest test = new MediaPlayerTest();
-        test.testSound();
+        test.testStop();
     }
 }

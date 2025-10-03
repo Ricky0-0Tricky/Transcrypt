@@ -67,6 +67,17 @@ public class MediaPlayer {
     }
     
     /**
+     * Method to stop the audio that's playing.
+     */
+    public void stop(){
+        // Check if the clip isn't null and is actually running
+        if(clip != null && clip.isRunning()){
+            clip.stop();
+            clip.close();
+        }
+    }
+    
+    /**
      * Method "toString".
      * @return Object's Definition
      */
