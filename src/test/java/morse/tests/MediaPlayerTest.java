@@ -42,9 +42,12 @@ public class MediaPlayerTest {
     /**
      * Names of the Files that will be played.
      */
-    String[] fileNames = {"dit","dah"};
+    String[] fileNames = {"dit.wav","dah.wav"};
     
-    
+    /**
+     * Default Constructor.
+     * @throws Exception Possible Exception
+     */
     public MediaPlayerTest() throws Exception{
         setupClass();
     }
@@ -114,13 +117,23 @@ public class MediaPlayerTest {
     }
     
     /**
+     * Method to test the ability of the Media Player
+     * to transmit a message in morse code format.
+     * @param message Message in String format
+     * @throws Exception Possible Exception
+     */
+    public void testMessage(String message) throws Exception{
+        this.media.playMessage(message);
+    }
+    
+    /**
      * Main Test Method.
      * @param args Possible Arguments (aren't used in this case)
      * @throws Exception Possible Exception
      */
     public static void main(String[] args) throws Exception {
         MediaPlayerTest test = new MediaPlayerTest();
-        test.testPause();
-        test.testResume();
+        String testMessage = ".. / ... . . / -- -.-- / -- .- .-. .. .- -. -. . / .-- .- .-.. -.- .. -. --. / .- .-- .- -.--";
+        test.testMessage(testMessage);
     }
 }
