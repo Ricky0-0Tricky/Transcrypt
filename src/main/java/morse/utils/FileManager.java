@@ -24,6 +24,9 @@
 package morse.utils;
 
 import java.io.File;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
 
 /**
  * Author: Ricky☆. 
@@ -77,8 +80,14 @@ public class FileManager {
      * @return Valor lógico da avaliação da duração
      */
     private boolean isValidLength(File submittedFile) {
-        // TODO: Write the code to guarantee that the file's duration isn't too long
-        return true;
+        // Obtains the duration of the file
+        double fileDuration = getFileDuration(submittedFile);
+        // Case where the file doesnt exceed the max duration and respects the minimum
+        if (fileDuration > 0 && fileDuration < 3.0) {
+            return true;
+        }
+        // Case where the file doesnt meet the defined criteria
+        return false;
     }
 
     /**
@@ -88,8 +97,20 @@ public class FileManager {
      * @return Duration of the given file in seconds
      */
     private double getFileDuration(File submittedFile) {
-        // TODO: Write the code to get the file's duration in seconds
-        return 0.0;
+        try {
+            // Tries to obtain the Audio Stream and it's format
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(submittedFile);
+            AudioFormat format = audioInputStream.getFormat();
+            // Obtains the number of frames of the Stream and calculates the duration through the number of frames and frame rate
+            long frames = audioInputStream.getFrameLength();
+            double fileDuration = (frames + 0.0) / format.getFrameRate();
+            // Returns the duration in seconds
+            return fileDuration;
+        } catch (Exception ex) {
+            // Prints the StackTrace if something bad happens
+            ex.printStackTrace();
+            return 0.0;
+        }
     }
     
     /**
