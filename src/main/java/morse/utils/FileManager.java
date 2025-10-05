@@ -57,8 +57,12 @@ public class FileManager {
      * @return Admissibility of File
      */
     private boolean isValidFile(File submittedFile){
-        // TODO: Write the code to check if the file is admissible or not
-        return true;
+        // Case where the file is on a valid format and has a valid length
+        if (isValidFormat(submittedFile) && isValidLength(submittedFile)) {
+            return true;
+        }
+        // Case where the file fails on one of the checks
+        return false;
     }
     
     /**
@@ -68,8 +72,15 @@ public class FileManager {
      * @return Whether or not it's in allowed format
      */
     private boolean isValidFormat(File submittedFile){
-        // TODO: Write the code to check if the format of the file is legal
-        return true;
+         // Case where the file is on an admissible format 
+        if (submittedFile.getName().matches("[A-Za-z]+.wav")
+                || submittedFile.getName().matches("[A-Za-z]+.mp3")
+                || submittedFile.getName().matches("[A-Za-z]+.aac")
+                || submittedFile.getName().matches("[A-Za-z]+.fac")) {
+            return true;
+        }
+        // Case where the file isn't on an admissible format 
+        return false;
     }
     
     
