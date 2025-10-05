@@ -11,6 +11,13 @@
         <maven.compiler.target>19</maven.compiler.target>
         <exec.mainClass>Transcrypt</exec.mainClass>
     </properties>
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+    </build>
     <description>Transcrypt is a morse code translator so people can use it without any concerns 
 of having Network Connection or beefy hardware requirements. It was made 
 with the  intent of being used to learn and disseminate the Morse Code as a 
