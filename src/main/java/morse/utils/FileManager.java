@@ -24,6 +24,9 @@
 package morse.utils;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -44,10 +47,19 @@ public class FileManager {
      * 
      * @param submittedFile File that needs to be saved
      * @return Result of the Attempt
+     * @throws IOException Possible Exception when writing the file to memory
      */
-    public boolean saveFile(File submittedFile){
-        // TODO: Write the code to save a file
-        return true;
+    public boolean saveFile(File submittedFile) throws IOException{
+        // Case where the file is valid 
+        if (isValidFile(submittedFile)) {
+            // Saving Attempt to save the file in memory
+            try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(submittedFile))) {
+                out.writeObject(this);
+                return true;
+            }
+        }
+        // Case where the file isn't valid
+        return false;
     }
     
     /**
@@ -73,10 +85,11 @@ public class FileManager {
      */
     private boolean isValidFormat(File submittedFile){
          // Case where the file is on an admissible format 
-        if (submittedFile.getName().matches("[A-Za-z]+.wav")
-                || submittedFile.getName().matches("[A-Za-z]+.mp3")
-                || submittedFile.getName().matches("[A-Za-z]+.aac")
-                || submittedFile.getName().matches("[A-Za-z]+.fac")) {
+        String name = submittedFile.getName();
+        if (submittedFile.getName().endsWith(".wav")
+                || submittedFile.getName().endsWith(".mp3")
+                || submittedFile.getName().endsWith(".aac")
+                || submittedFile.getName().endsWith(".fac")) {
             return true;
         }
         // Case where the file isn't on an admissible format 
