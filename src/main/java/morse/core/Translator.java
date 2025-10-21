@@ -25,7 +25,7 @@ package morse.core;
 
 /**
  * Author: Ricky☆. 
- * Starting Date: dd/MM/2025.
+ * Starting Date: 21/10/2025.
  * Ending Date: dd/MM/YYYY.
  * Description: The following class represents the Translator.
  * In charge of translations between Natural Human Language
@@ -33,5 +33,74 @@ package morse.core;
  * will grow out to have more duties than originaly intended.
  */
 public class Translator {
+    /**
+     * Submitted text to translate.
+     */
+    private String submittedText;
     
+    /**
+     * Result of the consequent translation.
+     */
+    private String result;
+   
+    /**
+     * Parameterized Constructor.
+     * @param submittedText Submitted text to translates
+     */
+    public Translator(String submittedText) {
+        this.submittedText = submittedText;
+        this.result = "";
+    }
+    
+    /**
+     * Setter of the submitted text.
+     * @param submittedText Submitted Text to translate
+     */
+    public void setSubmittedText(String submittedText){
+        this.submittedText = submittedText.toUpperCase();
+    }
+    
+    /**
+     * Translation Method to translate 
+     * according to the users request.
+     * 
+     * @param typeTranslation Type of the requested translation
+     * @return Requested translation
+     */
+    public String translate(boolean typeTranslation){
+        // TODO: Write the code to translate according to the users request
+        return "";
+    }
+
+    /**
+     * Method to translate Morse to Natural Language
+     *
+     * @param submittedCode Submitted Morse Code
+     * @return Natural Language Translation
+     */
+    private void morseToLanguage() {
+        // TODO: Write the code to translate morse to natural language
+    }
+
+    /**
+     * Method to translate Natural Language to Morse
+     *
+     * @param submittedText Submitted Text
+     * @return Morse Code Translation
+     */
+    private void languageToMorse() {
+        // TODO: Write the code to translate natural language to morse
+    }
+   
+    /**
+     * Method "toString"
+     * @return Object's Definitions
+     */
+    @Override
+    public String toString(){
+        return """
+               This object is an instance of the Media Player class.
+               Currently with the following submitted text ->""" + this.submittedText
+                + "and result -> " + this.result + ".";
+    }
 }
