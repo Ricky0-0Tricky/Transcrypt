@@ -29,7 +29,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.Dictionary;
+import java.util.Hashtable;
 
 /**
  * Author: Ricky☆. 
@@ -39,7 +41,7 @@ import java.util.Dictionary;
  * It is supposed to hold things like the current UI theme the user has chosen
  * and the current sounds the user has uploaded.
  */
-public class Settings {
+public class Settings implements Serializable {
 
     /**
      * Dictionary to store the names of the 
@@ -56,7 +58,7 @@ public class Settings {
      * Default Constructor.
      */
     public Settings() {
-        this.audioFiles = null;
+        this.audioFiles = new Hashtable();
         this.visualMode = false;
         populateFiles();
     }
@@ -88,12 +90,14 @@ public class Settings {
      *
      * @param fileName Name of the Settings File
      * @return Objeto de Definições
+     * @throws java.io.IOException Exception that occurs when a file isn't read correctly
      */
-    public Settings load(String fileName) {
+    public Settings load(String fileName) throws IOException {
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileName))) {
             return (Settings) in.readObject();
         } catch(Exception ex) {
-            return null;
+            save("settings.obj");
+            return load("settings.obj");
         }
     }
 
