@@ -23,6 +23,8 @@
  */
 package morse.core;
 
+import morse.utils.TranslatingThread;
+
 /**
  * Author: Ricky☆. 
  * Starting Date: 21/10/2025.
@@ -33,6 +35,7 @@ package morse.core;
  * will grow out to have more duties than originaly intended.
  */
 public class Translator {
+    
     /**
      * Submitted text to translate.
      */
@@ -68,28 +71,53 @@ public class Translator {
      * @return Requested translation
      */
     public String translate(boolean typeTranslation){
-        // TODO: Write the code to translate according to the users request
-        return "";
+        // Natural Language -> Morse Code
+        if(typeTranslation == true){
+            languageToMorse();
+            return this.result;
+        } else {
+            // Morse Code -> Natural Language
+            morseToLanguage();
+            return this.result;
+        }
     }
 
     /**
-     * Method to translate Morse to Natural Language
+     * Method to translate Morse to Natural Language.
      *
      * @param submittedCode Submitted Morse Code
      * @return Natural Language Translation
      */
     private void morseToLanguage() {
-        // TODO: Write the code to translate morse to natural language
+        // Creation and Start of a Translating Thread 
+        TranslatingThread thd = new TranslatingThread(this.submittedText,false);
+        thd.start();
+        // Attempt at translating and gathering of the result 
+        try{
+            thd.join();
+            this.result = thd.result;
+        } catch(InterruptedException ex){
+            ex.printStackTrace();
+        }
     }
 
     /**
-     * Method to translate Natural Language to Morse
+     * Method to translate Natural Language to Morse.
      *
      * @param submittedText Submitted Text
      * @return Morse Code Translation
      */
     private void languageToMorse() {
-        // TODO: Write the code to translate natural language to morse
+        // Creation and Start of a Translating Thread 
+        TranslatingThread thd = new TranslatingThread(this.submittedText,true);
+        thd.start();
+        // Attempt at translating and gathering of the result 
+        try{
+            thd.join();
+            this.result = thd.result;
+        } catch(InterruptedException ex){
+            ex.printStackTrace();
+        }
     }
    
     /**
