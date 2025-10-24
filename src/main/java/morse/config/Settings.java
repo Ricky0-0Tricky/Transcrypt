@@ -23,6 +23,12 @@
  */
 package morse.config;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Dictionary;
 
 /**
@@ -69,9 +75,12 @@ public class Settings {
      * Method to save the current settings.
      *
      * @param fileName Name of the Settings File
+     * @throws java.io.FileNotFoundException Exception that occurs when a file isn't found
      */
-    public void save(String fileName) {
-        // TODO: Write the code to save the selected settings
+    public void save(String fileName) throws FileNotFoundException, IOException {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(fileName))) {
+            out.writeObject(this);
+        }
     }
 
     /**
@@ -81,8 +90,11 @@ public class Settings {
      * @return Objeto de Definições
      */
     public Settings load(String fileName) {
-        // TODO: Write the code to load the selected settings
-        return null;
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileName))) {
+            return (Settings) in.readObject();
+        } catch(Exception ex) {
+            return null;
+        }
     }
 
     /**
