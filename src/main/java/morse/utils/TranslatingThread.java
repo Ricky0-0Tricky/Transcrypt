@@ -23,6 +23,7 @@
  */
 package morse.utils;
 
+import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
@@ -103,5 +104,45 @@ public class TranslatingThread extends Thread {
             this.info.put(this.alphanumeric[numIteration], this.code[numIteration]);
             numIteration++;
         }
+    }
+    
+    /**
+     * Method to remove spaces before breaks between words.
+     *
+     * @param spaces ArrayList containing space indexes
+     */
+    private void removeSpacesBeforeBreaks(ArrayList spaces) {
+        // Loop to go over the space indexes
+        for (int i = 0; i < spaces.size(); i++) {
+            // Case where the previous char of the space is a break
+            if (submittedText.charAt(((int) spaces.get(i)) - 1) == '/') {
+                submittedText = submittedText.substring(0, ((int) spaces.get(i)) - 1) + "" + submittedText.substring(((int) spaces.get(i)) + 1, submittedText.length());
+                spaces = findSpaceIndexs(submittedText);
+            }
+        }
+    }
+
+    /**
+     * Method designed to find the space indexes in a String.
+     *
+     * @return ArrayList with the space indexes
+     */
+    private ArrayList findSpaceIndexs(String submittedText) {
+        ArrayList<Integer> spaces = new ArrayList<Integer>();
+        String auxText = submittedText;
+        boolean spaceExists = true;
+        int offset = 0;
+        while (auxText.indexOf(" ") >= 0) {
+            int localIndex = auxText.indexOf(" ");
+            spaces.add(localIndex + offset);
+            auxText = auxText.substring(localIndex + 1);
+            offset += localIndex + 1;
+        }
+        return spaces;
+    }
+    
+    @Override
+    public void run(){
+        // TODO: Write the code to translate the provided String
     }
 }
