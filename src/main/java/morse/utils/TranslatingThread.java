@@ -25,7 +25,9 @@ package morse.utils;
 
 import java.util.ArrayList;
 import java.util.Dictionary;
+import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.NoSuchElementException;
 
 /**
  * Author: Ricky☆. 
@@ -89,6 +91,7 @@ public class TranslatingThread extends Thread {
         this.result = "";
         this.submittedText = submittedText.strip().toUpperCase();
         this.info = new Hashtable();
+        this.typeTranslation = typeTranslation;
         // Population of the Translation Dictionary
         populateDictionary();
     }
@@ -141,8 +144,45 @@ public class TranslatingThread extends Thread {
         return spaces;
     }
     
+    /**
+     * Method created to find the corresponding Letter to the Symbol.
+     *
+     * @param submittedCode Submitted Morse Code
+     * @return Corresponding Letter 
+     */
+    private String findLetter(String submittedCode) throws NoSuchElementException {
+        boolean foundLetter = false;
+        char currentKey = 'X';
+        Enumeration<Character> keys = info.keys();
+        try {
+            // Loop to find the corresponding letter
+            while (!foundLetter) {
+                currentKey = keys.nextElement();
+                if (info.get(currentKey).equalsIgnoreCase(submittedCode)) {
+                    foundLetter = true;
+                }
+            }
+        // Exception where there isn't a corresponding letter
+        } catch (Exception ex) {
+            return "Error ";
+        }
+        // Returns the corresponding letter 
+        return currentKey + "";
+    }
+    
     @Override
     public void run(){
-        // TODO: Write the code to translate the provided String
+        // Natural Language -> Morse Code
+        if (typeTranslation == true) {
+            for (int i = 0; i < submittedText.length(); i++) {
+                // Avoid the translation of spaces
+                if (!((submittedText.charAt(i) + "").isBlank())) {
+                    this.result += info.get(submittedText.charAt(i)) + " ";
+                } else {
+                    // Assure that the spaces will be mantained
+                    this.result += "/";
+                }
+            }
+        }
     }
 }
