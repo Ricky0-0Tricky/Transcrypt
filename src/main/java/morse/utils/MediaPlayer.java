@@ -34,7 +34,7 @@ import javax.sound.sampled.Clip;
 /**
  * Author: Ricky☆. 
  * Starting Date: 02/10/2025. 
- * Ending Date: dd/MM/YYYY.
+ * Ending Date: dd/MM/2025.
  * Description: The following class represents a Media Player. 
  * As its name implies, it is responsible for playing media files 
  * in the likes of .AIFF, .AU or .WAV formats.

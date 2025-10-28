@@ -28,7 +28,7 @@ import morse.core.Translator;
 /**
  * Author: Ricky☆. 
  * Starting Date: 26/10/2025.
- * Ending Date: dd/10/2025.
+ * Ending Date: 26/10/2025.
  * Description: The following class pretends to carry out
  * tests on the class "Translator" with the intent of
  * guaranteeing the predicted behaviour is assured.
@@ -40,10 +40,15 @@ public class TranslatorTest {
     Translator trans;
 
     /**
-     * Names of the Files that will be played.
+     * Natural Language String.
      */
     String naturalStr = "Hello World";
-
+    
+    /**
+     * Morse Code String. 
+     */
+    String morseCode = ".... . .-.. .-.. --- /.-- --- .-. .-.. -.. ";
+    
     /**
      * Default Constructor.
      *
@@ -59,7 +64,7 @@ public class TranslatorTest {
      * @throws Exception Possible Exception
      */
     public void setupClass() throws Exception {
-        this.trans = new Translator(naturalStr);
+        this.trans = new Translator(morseCode);
     }
 
     /**
@@ -81,6 +86,17 @@ public class TranslatorTest {
         String result = trans.translate(true);
         System.out.println("The original string was " + this.naturalStr + "\nand the result was " + result);
     }
+    
+    /**
+     * Method to test the ability of the Translator to translate morse 
+     * code into natural language.
+     *
+     * @throws Exception Possible Exception
+     */
+    public void testMorseToNatural() throws Exception {
+        String result = trans.translate(false);
+        System.out.println("The original string was " + this.morseCode + "\nand the result was " + result);
+    }
 
     /**
      * Main Test Method.
@@ -90,6 +106,6 @@ public class TranslatorTest {
      */
     public static void main(String[] args) throws Exception {
         TranslatorTest test = new TranslatorTest();
-        test.testNaturalToMorse();
+        test.testMorseToNatural();
     }
 }

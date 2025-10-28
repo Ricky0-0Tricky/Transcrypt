@@ -28,7 +28,7 @@ import morse.utils.TranslatingThread;
 /**
  * Author: Ricky☆. 
  * Starting Date: 21/10/2025.
- * Ending Date: dd/MM/YYYY.
+ * Ending Date: 26/10/2025.
  * Description: The following class represents the Translator.
  * In charge of translations between Natural Human Language
  * and Morse Code. Noting that it's possible that this class
@@ -127,7 +127,7 @@ public class Translator {
     @Override
     public String toString(){
         return """
-               This object is an instance of the Media Player class.
+               This object is an instance of the Translator class.
                Currently with the following submitted text ->""" + this.submittedText
                 + "and result -> " + this.result + ".";
     }

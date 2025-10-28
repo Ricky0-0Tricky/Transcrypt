@@ -32,7 +32,7 @@ import java.util.NoSuchElementException;
 /**
  * Author: Ricky☆. 
  * Starting Date: 24/10/2025.
- * Ending Date: dd/MM/YYYY.
+ * Ending Date: 26/10/2025.
  * Description: The following class represents a Translating Thread.
  * In charge to do do the heavy lifting in the translation department.
  */
@@ -182,6 +182,30 @@ public class TranslatingThread extends Thread {
                     // Assure that the spaces will be mantained
                     this.result += "/";
                 }
+            }
+        // Morse Code -> Natural Language
+        } else {
+            // Normalization of the submitted text
+            removeSpacesBeforeBreaks(findSpaceIndexs(submittedText));
+            // Finding the closest space 
+            String[] avalPhrases = submittedText.split("/");
+            int count = 0;
+            // Loop to go over each phrase
+            while (count < avalPhrases.length) {
+                // Seperate phrases into words
+                String[] avalWords = avalPhrases[count].split("/\\s+/");
+                // Loop to go over each word
+                for (int j = 0; j < avalWords.length; j++) {
+                    // Seperate words into letters
+                    String[] avalLetters = avalWords[j].split(" ");
+                    // Loop to go over each letter in a single word
+                    for (int i = 0; i < avalLetters.length; ++i) {
+                        this.result += findLetter(avalLetters[i].trim());
+                    }
+                }
+                // Add the space between words and continue to the phrase
+                this.result += " ";
+                count++;
             }
         }
     }

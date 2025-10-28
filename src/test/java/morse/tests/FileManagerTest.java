@@ -30,7 +30,7 @@ import morse.utils.FileManager;
 /**
  * Author: Ricky☆. 
  * Starting Date: 20/10/2025.
- * Ending Date: dd/MM/2025.
+ * Ending Date: 26/10/2025 (I think).
  * Description: The following class pretends to carry out
  * tests on the class "FileManager" with the intent of
  * guaranteeing the predicted behaviour is assured.
