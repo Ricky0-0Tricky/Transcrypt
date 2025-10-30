@@ -55,6 +55,18 @@ public class MenuFrame extends javax.swing.JFrame {
 
         mainTabbedPanel = new javax.swing.JTabbedPane();
         translatorPanel = new javax.swing.JPanel();
+        translatedScrollPane = new javax.swing.JScrollPane();
+        translatedTextPane = new javax.swing.JTextPane();
+        toBeTranslatedScrollPane = new javax.swing.JScrollPane();
+        toBeTranslatedTextPane = new javax.swing.JTextPane();
+        modeButton = new javax.swing.JButton();
+        translateButton = new javax.swing.JButton();
+        fileChooserButton = new javax.swing.JButton();
+        toBeTranslatedTitleLabel = new javax.swing.JLabel();
+        titleLabel = new javax.swing.JLabel();
+        translatedTitleLabel = new javax.swing.JLabel();
+        currentImageLabel = new javax.swing.JLabel();
+        arrowsImage = new javax.swing.JLabel();
         aboutPanel = new javax.swing.JPanel();
         helpPanel = new javax.swing.JPanel();
 
@@ -63,15 +75,104 @@ public class MenuFrame extends javax.swing.JFrame {
         setIconImage(new ImageIcon(getClass().getResource("/images/mainIcon.png")).getImage());
         setResizable(false);
 
+        translatedTextPane.setEditable(false);
+        translatedTextPane.setFocusable(false);
+        translatedScrollPane.setViewportView(translatedTextPane);
+
+        toBeTranslatedScrollPane.setToolTipText("");
+        toBeTranslatedScrollPane.setViewportView(toBeTranslatedTextPane);
+
+        modeButton.setText("Change Mode");
+
+        translateButton.setText("Translate");
+
+        fileChooserButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/submitFile.png"))); // NOI18N
+
+        toBeTranslatedTitleLabel.setFont(new java.awt.Font("Lucida Sans Unicode", 0, 12)); // NOI18N
+        toBeTranslatedTitleLabel.setForeground(new java.awt.Color(0, 255, 0));
+        toBeTranslatedTitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        toBeTranslatedTitleLabel.setText("Natural Language");
+
+        titleLabel.setFont(new java.awt.Font("Lucida Sans Typewriter", 0, 12)); // NOI18N
+        titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        titleLabel.setText("Morse Code Translator");
+        titleLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        translatedTitleLabel.setFont(new java.awt.Font("Lucida Sans Typewriter", 0, 12)); // NOI18N
+        translatedTitleLabel.setForeground(new java.awt.Color(255, 0, 0));
+        translatedTitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        translatedTitleLabel.setText("Morse");
+
+        currentImageLabel.setFocusable(false);
+        currentImageLabel.setRequestFocusEnabled(false);
+        currentImageLabel.setVerifyInputWhenFocusTarget(false);
+
+        arrowsImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/translationArrows.png"))); // NOI18N
+
         javax.swing.GroupLayout translatorPanelLayout = new javax.swing.GroupLayout(translatorPanel);
         translatorPanel.setLayout(translatorPanelLayout);
         translatorPanelLayout.setHorizontalGroup(
             translatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 514, Short.MAX_VALUE)
+            .addGroup(translatorPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(toBeTranslatedScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(translatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(translatorPanelLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(arrowsImage)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(translatorPanelLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(currentImageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addComponent(translatedScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(translatorPanelLayout.createSequentialGroup()
+                .addGap(89, 89, 89)
+                .addComponent(modeButton)
+                .addGap(18, 18, 18)
+                .addComponent(translateButton)
+                .addGap(27, 27, 27)
+                .addComponent(fileChooserButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(translatorPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(toBeTranslatedTitleLabel)
+                .addGap(26, 26, 26)
+                .addComponent(titleLabel)
+                .addGap(42, 42, 42)
+                .addComponent(translatedTitleLabel)
+                .addGap(102, 102, 102))
         );
         translatorPanelLayout.setVerticalGroup(
             translatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 309, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, translatorPanelLayout.createSequentialGroup()
+                .addGroup(translatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, translatorPanelLayout.createSequentialGroup()
+                        .addGap(13, 13, 13)
+                        .addComponent(translatedTitleLabel))
+                    .addGroup(translatorPanelLayout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addComponent(toBeTranslatedTitleLabel))
+                    .addGroup(translatorPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(titleLabel)))
+                .addGroup(translatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(translatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(toBeTranslatedScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(translatedScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(translatorPanelLayout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(currentImageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(arrowsImage)))
+                .addGap(15, 15, 15)
+                .addGroup(translatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(fileChooserButton)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, translatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(translateButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(modeButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(23, 23, 23))
         );
 
         mainTabbedPanel.addTab("Translator", translatorPanel);
@@ -80,7 +181,7 @@ public class MenuFrame extends javax.swing.JFrame {
         aboutPanel.setLayout(aboutPanelLayout);
         aboutPanelLayout.setHorizontalGroup(
             aboutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 514, Short.MAX_VALUE)
+            .addGap(0, 524, Short.MAX_VALUE)
         );
         aboutPanelLayout.setVerticalGroup(
             aboutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -93,7 +194,7 @@ public class MenuFrame extends javax.swing.JFrame {
         helpPanel.setLayout(helpPanelLayout);
         helpPanelLayout.setHorizontalGroup(
             helpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 514, Short.MAX_VALUE)
+            .addGap(0, 524, Short.MAX_VALUE)
         );
         helpPanelLayout.setVerticalGroup(
             helpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -113,7 +214,7 @@ public class MenuFrame extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(mainTabbedPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
+                .addComponent(mainTabbedPanel)
                 .addGap(0, 0, 0))
         );
 
@@ -157,8 +258,20 @@ public class MenuFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel aboutPanel;
+    private javax.swing.JLabel arrowsImage;
+    private javax.swing.JLabel currentImageLabel;
+    private javax.swing.JButton fileChooserButton;
     private javax.swing.JPanel helpPanel;
     private javax.swing.JTabbedPane mainTabbedPanel;
+    private javax.swing.JButton modeButton;
+    private javax.swing.JLabel titleLabel;
+    private javax.swing.JScrollPane toBeTranslatedScrollPane;
+    private javax.swing.JTextPane toBeTranslatedTextPane;
+    private javax.swing.JLabel toBeTranslatedTitleLabel;
+    private javax.swing.JButton translateButton;
+    private javax.swing.JScrollPane translatedScrollPane;
+    private javax.swing.JTextPane translatedTextPane;
+    private javax.swing.JLabel translatedTitleLabel;
     private javax.swing.JPanel translatorPanel;
     // End of variables declaration//GEN-END:variables
 }
