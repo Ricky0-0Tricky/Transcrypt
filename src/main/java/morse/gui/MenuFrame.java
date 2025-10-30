@@ -68,6 +68,8 @@ public class MenuFrame extends javax.swing.JFrame {
         currentImageLabel = new javax.swing.JLabel();
         arrowsImage = new javax.swing.JLabel();
         aboutPanel = new javax.swing.JPanel();
+        aboutScrollPane = new javax.swing.JScrollPane();
+        aboutTextArea = new javax.swing.JTextArea();
         helpPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -177,15 +179,28 @@ public class MenuFrame extends javax.swing.JFrame {
 
         mainTabbedPanel.addTab("Translator", translatorPanel);
 
+        aboutTextArea.setEditable(false);
+        aboutTextArea.setColumns(20);
+        aboutTextArea.setRows(8);
+        aboutTextArea.setText("                                      Morse Code Translator\n\n-Purpose/Development of the App\n\nThis app pretends to translate natural language to morse code and\nvice-versa so any person, when in need of such tool, can do it \nwithout constraints of Network or Hardware.\n\n-How to use it?\n\nThis app is pretty simple to operate being that the user can either \nwrite himself the text or morse code that wants translated or can \nsubmit a text file to translate itself. Apart from that there is also the\noption to listen/see the message being transmited in real time.");
+        aboutTextArea.setFocusable(false);
+        aboutScrollPane.setViewportView(aboutTextArea);
+
         javax.swing.GroupLayout aboutPanelLayout = new javax.swing.GroupLayout(aboutPanel);
         aboutPanel.setLayout(aboutPanelLayout);
         aboutPanelLayout.setHorizontalGroup(
             aboutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 524, Short.MAX_VALUE)
+            .addGroup(aboutPanelLayout.createSequentialGroup()
+                .addGap(70, 70, 70)
+                .addComponent(aboutScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(62, 62, 62))
         );
         aboutPanelLayout.setVerticalGroup(
             aboutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 309, Short.MAX_VALUE)
+            .addGroup(aboutPanelLayout.createSequentialGroup()
+                .addGap(6, 6, 6)
+                .addComponent(aboutScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6))
         );
 
         mainTabbedPanel.addTab("About", aboutPanel);
@@ -258,6 +273,8 @@ public class MenuFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel aboutPanel;
+    private javax.swing.JScrollPane aboutScrollPane;
+    private javax.swing.JTextArea aboutTextArea;
     private javax.swing.JLabel arrowsImage;
     private javax.swing.JLabel currentImageLabel;
     private javax.swing.JButton fileChooserButton;
