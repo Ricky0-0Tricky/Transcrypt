@@ -29,6 +29,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import javax.swing.ImageIcon;
+import morse.core.Translator;
+import morse.utils.MediaPlayer;
 
 /**
  * Author: Ricky☆. 
@@ -39,8 +41,15 @@ import javax.swing.ImageIcon;
  */
 public class MenuFrame extends javax.swing.JFrame {
     
+    // Components of the App's Background Activity
+    Translator trans;
+    MediaPlayer mediaPlay;
+    
     // Current Translation Mode 
     boolean currentMode = true;
+    
+    // Current Sound Transmission Mode
+    boolean soundMode = true;
     
     // File Submission State
     boolean submitState = true;
@@ -53,6 +62,9 @@ public class MenuFrame extends javax.swing.JFrame {
         initComponents();
         // Centralize the JFrame on the Screen
         setLocationRelativeTo(null);
+        // Inicializa as utilities necessárias
+        trans = new Translator("");
+        mediaPlay = new MediaPlayer();
     }
 
     /**
@@ -112,6 +124,11 @@ public class MenuFrame extends javax.swing.JFrame {
         });
 
         translateButton.setText("Translate");
+        translateButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                translateButtonMouseClicked(evt);
+            }
+        });
 
         fileChooserButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/submitFile.png"))); // NOI18N
         fileChooserButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -408,6 +425,28 @@ public class MenuFrame extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_fileChooserButtonMouseClicked
+
+    private void translateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_translateButtonMouseClicked
+        // Natural Language -> Morse Code
+        if (currentMode == true && !toBeTranslatedTextPane.getText().isBlank()) {
+            trans.setSubmittedText(toBeTranslatedTextPane.getText().toUpperCase());
+            String translatedText = trans.translate(currentMode);
+            translatedTextPane.setText(translatedText);
+        // Morse Code -> Natural Language
+        } else if(currentMode == false && !translatedTextPane.getText().isBlank()){
+            // Transmission of the message in Morse
+            if (soundMode == true) {
+                Thread thd = new Thread(() -> {
+                    mediaPlay.playMessage(translatedTextPane.getText());
+                });
+                thd.setName("mediaPlay");
+                thd.start();
+            }
+            trans.setSubmittedText(translatedTextPane.getText().toUpperCase());
+            String translatedText = trans.translate(currentMode);
+            toBeTranslatedTextPane.setText(translatedText);
+        }
+    }//GEN-LAST:event_translateButtonMouseClicked
 
     /**
      * @param args the command line arguments
