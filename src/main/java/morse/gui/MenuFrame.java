@@ -24,6 +24,10 @@
 package morse.gui;
 
 import java.awt.Color;
+import java.awt.FileDialog;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import javax.swing.ImageIcon;
 
 /**
@@ -110,6 +114,11 @@ public class MenuFrame extends javax.swing.JFrame {
         translateButton.setText("Translate");
 
         fileChooserButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/submitFile.png"))); // NOI18N
+        fileChooserButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                fileChooserButtonMouseClicked(evt);
+            }
+        });
 
         toBeTranslatedTitleLabel.setFont(new java.awt.Font("Lucida Sans Unicode", 0, 12)); // NOI18N
         toBeTranslatedTitleLabel.setForeground(new java.awt.Color(0, 255, 0));
@@ -366,6 +375,39 @@ public class MenuFrame extends javax.swing.JFrame {
             submitState = false;
         }
     }//GEN-LAST:event_modeButtonMouseClicked
+
+    private void fileChooserButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fileChooserButtonMouseClicked
+        if (submitState == true) {
+            // Creation and Configuration of the File Dialog
+            FileDialog fileDialog = new java.awt.FileDialog((java.awt.Frame) null);
+            fileDialog.setTitle("File Upload");
+            fileDialog.setDirectory("C:\\");
+            fileDialog.setMode(FileDialog.LOAD);
+            fileDialog.setVisible(true);
+            // Obtainment of the submitted file
+            File[] file = fileDialog.getFiles();
+            // Case when the user has selected a file
+            if (file.length != 0) {
+                // Evaluation over the validity of the file
+                if (file[0].getName().endsWith(".txt")) {
+                    try {
+                        // Reading of its contents
+                        BufferedReader br = new BufferedReader(new FileReader(file[0]));
+                        StringBuilder content = new StringBuilder();
+                        String line;
+                        while ((line = br.readLine()) != null) {
+                            content.append(line);
+                        }
+                        br.close();
+                        // Insertion of the file's content to the text panel
+                        toBeTranslatedTextPane.setText(content.toString());
+                    } catch (Exception e) {    
+                        javax.swing.JOptionPane.showMessageDialog(this, "An error occured while trying to read your file!", "TXT Validation", javax.swing.JOptionPane.ERROR_MESSAGE);
+                    }            
+                }
+            }
+        }
+    }//GEN-LAST:event_fileChooserButtonMouseClicked
 
     /**
      * @param args the command line arguments
