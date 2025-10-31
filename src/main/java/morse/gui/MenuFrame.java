@@ -71,6 +71,15 @@ public class MenuFrame extends javax.swing.JFrame {
         aboutScrollPane = new javax.swing.JScrollPane();
         aboutTextArea = new javax.swing.JTextArea();
         helpPanel = new javax.swing.JPanel();
+        visualModeTitleLabel = new javax.swing.JLabel();
+        visualModeButton = new javax.swing.JButton();
+        currentModeLabel = new javax.swing.JLabel();
+        whichModeTitleLabel = new javax.swing.JLabel();
+        whichModeScrollPane = new javax.swing.JScrollPane();
+        whichModeTextArea = new javax.swing.JTextArea();
+        soundTransmitionLabel = new javax.swing.JLabel();
+        soundTransmitionTitleLabel = new javax.swing.JLabel();
+        soundModeButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Transcrypt");
@@ -205,15 +214,95 @@ public class MenuFrame extends javax.swing.JFrame {
 
         mainTabbedPanel.addTab("About", aboutPanel);
 
+        visualModeTitleLabel.setFont(new java.awt.Font("Lucida Sans Unicode", 0, 14)); // NOI18N
+        visualModeTitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        visualModeTitleLabel.setText("Visual Mode");
+
+        visualModeButton.setMaximumSize(new java.awt.Dimension(50, 45));
+        visualModeButton.setMinimumSize(new java.awt.Dimension(50, 45));
+        visualModeButton.setPreferredSize(new java.awt.Dimension(50, 45));
+
+        currentModeLabel.setFont(new java.awt.Font("Lucida Sans Typewriter", 0, 10)); // NOI18N
+        currentModeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        currentModeLabel.setText("Day Mode");
+
+        whichModeTitleLabel.setFont(new java.awt.Font("Lucida Sans Unicode", 0, 14)); // NOI18N
+        whichModeTitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        whichModeTitleLabel.setText("How do I know which mode I'm using?");
+
+        whichModeTextArea.setEditable(false);
+        whichModeTextArea.setColumns(20);
+        whichModeTextArea.setFont(new java.awt.Font("Lucida Sans Unicode", 0, 12)); // NOI18N
+        whichModeTextArea.setRows(5);
+        whichModeTextArea.setText("If you want to know which language you are currently translating from \nand to, just check the titles: the green one indicates the source language \n(from) and the red one indicates the target language (to).");
+        whichModeTextArea.setFocusable(false);
+        whichModeScrollPane.setViewportView(whichModeTextArea);
+
+        soundTransmitionLabel.setFont(new java.awt.Font("Lucida Sans Typewriter", 0, 10)); // NOI18N
+        soundTransmitionLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        soundTransmitionLabel.setText("OFF");
+
+        soundTransmitionTitleLabel.setFont(new java.awt.Font("Lucida Sans Unicode", 0, 14)); // NOI18N
+        soundTransmitionTitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        soundTransmitionTitleLabel.setText("Sound");
+
+        soundModeButton.setMaximumSize(new java.awt.Dimension(50, 45));
+        soundModeButton.setMinimumSize(new java.awt.Dimension(50, 45));
+        soundModeButton.setPreferredSize(new java.awt.Dimension(50, 45));
+
         javax.swing.GroupLayout helpPanelLayout = new javax.swing.GroupLayout(helpPanel);
         helpPanel.setLayout(helpPanelLayout);
         helpPanelLayout.setHorizontalGroup(
             helpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 524, Short.MAX_VALUE)
+            .addGroup(helpPanelLayout.createSequentialGroup()
+                .addGroup(helpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(helpPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(helpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(helpPanelLayout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(whichModeScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(whichModeTitleLabel)))
+                    .addGroup(helpPanelLayout.createSequentialGroup()
+                        .addGap(128, 128, 128)
+                        .addGroup(helpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(visualModeTitleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(helpPanelLayout.createSequentialGroup()
+                                .addGap(35, 35, 35)
+                                .addGroup(helpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(currentModeLabel)
+                                    .addComponent(visualModeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(57, 57, 57)
+                        .addGroup(helpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(helpPanelLayout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(soundModeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(soundTransmitionTitleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(helpPanelLayout.createSequentialGroup()
+                                .addGap(20, 20, 20)
+                                .addComponent(soundTransmitionLabel)))))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
         helpPanelLayout.setVerticalGroup(
             helpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 309, Short.MAX_VALUE)
+            .addGroup(helpPanelLayout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addGroup(helpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(visualModeTitleLabel)
+                    .addComponent(soundTransmitionTitleLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(helpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(visualModeButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(soundModeButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(helpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(currentModeLabel)
+                    .addComponent(soundTransmitionLabel))
+                .addGap(28, 28, 28)
+                .addComponent(whichModeTitleLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(whichModeScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         mainTabbedPanel.addTab("Help", helpPanel);
@@ -277,10 +366,14 @@ public class MenuFrame extends javax.swing.JFrame {
     private javax.swing.JTextArea aboutTextArea;
     private javax.swing.JLabel arrowsImage;
     private javax.swing.JLabel currentImageLabel;
+    private javax.swing.JLabel currentModeLabel;
     private javax.swing.JButton fileChooserButton;
     private javax.swing.JPanel helpPanel;
     private javax.swing.JTabbedPane mainTabbedPanel;
     private javax.swing.JButton modeButton;
+    private javax.swing.JButton soundModeButton;
+    private javax.swing.JLabel soundTransmitionLabel;
+    private javax.swing.JLabel soundTransmitionTitleLabel;
     private javax.swing.JLabel titleLabel;
     private javax.swing.JScrollPane toBeTranslatedScrollPane;
     private javax.swing.JTextPane toBeTranslatedTextPane;
@@ -290,5 +383,10 @@ public class MenuFrame extends javax.swing.JFrame {
     private javax.swing.JTextPane translatedTextPane;
     private javax.swing.JLabel translatedTitleLabel;
     private javax.swing.JPanel translatorPanel;
+    private javax.swing.JButton visualModeButton;
+    private javax.swing.JLabel visualModeTitleLabel;
+    private javax.swing.JScrollPane whichModeScrollPane;
+    private javax.swing.JTextArea whichModeTextArea;
+    private javax.swing.JLabel whichModeTitleLabel;
     // End of variables declaration//GEN-END:variables
 }
