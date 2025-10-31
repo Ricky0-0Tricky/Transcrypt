@@ -23,6 +23,7 @@
  */
 package morse.gui;
 
+import java.awt.Color;
 import javax.swing.ImageIcon;
 
 /**
@@ -33,7 +34,13 @@ import javax.swing.ImageIcon;
  * where the end-user will interact with the app itself.
  */
 public class MenuFrame extends javax.swing.JFrame {
-
+    
+    // Current Translation Mode 
+    boolean currentMode = true;
+    
+    // File Submission State
+    boolean submitState = true;
+    
     /**
      * Creates new form MenuFrame
      */
@@ -94,6 +101,11 @@ public class MenuFrame extends javax.swing.JFrame {
         toBeTranslatedScrollPane.setViewportView(toBeTranslatedTextPane);
 
         modeButton.setText("Change Mode");
+        modeButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                modeButtonMouseClicked(evt);
+            }
+        });
 
         translateButton.setText("Translate");
 
@@ -324,6 +336,36 @@ public class MenuFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void modeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_modeButtonMouseClicked
+        // Inverts the current translation mode
+        currentMode = !currentMode;
+        // Clears both text panels
+        toBeTranslatedTextPane.setText("");
+        translatedTextPane.setText("");
+        // Natural Language -> Morse Code
+        if (currentMode == true) {    
+            toBeTranslatedTitleLabel.setForeground(Color.GREEN);
+            translatedTitleLabel.setForeground(Color.RED);
+            toBeTranslatedTextPane.setEditable(true);
+            toBeTranslatedTextPane.setFocusable(true);
+            translatedTextPane.setEditable(false);
+            translatedTextPane.setFocusable(false);
+            fileChooserButton.setEnabled(true);
+            fileChooserButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/submitFile.png")));
+            submitState = true;
+        // Morse Code -> Natural Language
+        } else {
+            toBeTranslatedTitleLabel.setForeground(Color.RED);
+            translatedTitleLabel.setForeground(Color.GREEN);
+            toBeTranslatedTextPane.setEditable(false);
+            toBeTranslatedTextPane.setFocusable(false);
+            translatedTextPane.setEditable(true);
+            translatedTextPane.setFocusable(true);
+            fileChooserButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/submitFileDisabled.png")));
+            submitState = false;
+        }
+    }//GEN-LAST:event_modeButtonMouseClicked
 
     /**
      * @param args the command line arguments
