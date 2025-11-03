@@ -28,32 +28,32 @@ import java.awt.FileDialog;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import morse.core.Translator;
 import morse.utils.MediaPlayer;
 
 /**
- * Author: Ricky☆. 
- * Starting Date: 30/10/2025.
- * Ending Date: ??/11/2025.
- * Description: The following class represents the menu
- * where the end-user will interact with the app itself.
+ * Author: Ricky☆. Starting Date: 30/10/2025. Ending Date: ??/11/2025.
+ * Description: The following class represents the menu where the end-user will
+ * interact with the app itself.
  */
 public class MenuFrame extends javax.swing.JFrame {
-    
+
     // Components of the App's Background Activity
     Translator trans;
     MediaPlayer mediaPlay;
-    
+
     // Current Translation Mode 
     boolean currentMode = true;
-    
+
     // Current Sound Transmission Mode
     boolean soundMode = true;
-    
+
     // File Submission State
     boolean submitState = true;
-    
+
     /**
      * Creates new form MenuFrame
      */
@@ -284,9 +284,15 @@ public class MenuFrame extends javax.swing.JFrame {
         soundTransmitionTitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         soundTransmitionTitleLabel.setText("Sound");
 
+        soundModeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/soundOff.png"))); // NOI18N
         soundModeButton.setMaximumSize(new java.awt.Dimension(50, 45));
         soundModeButton.setMinimumSize(new java.awt.Dimension(50, 45));
         soundModeButton.setPreferredSize(new java.awt.Dimension(50, 45));
+        soundModeButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                soundModeButtonMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout helpPanelLayout = new javax.swing.GroupLayout(helpPanel);
         helpPanel.setLayout(helpPanelLayout);
@@ -340,7 +346,7 @@ public class MenuFrame extends javax.swing.JFrame {
                 .addComponent(whichModeTitleLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(whichModeScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
 
         mainTabbedPanel.addTab("Help", helpPanel);
@@ -370,7 +376,7 @@ public class MenuFrame extends javax.swing.JFrame {
         toBeTranslatedTextPane.setText("");
         translatedTextPane.setText("");
         // Natural Language -> Morse Code
-        if (currentMode == true) {    
+        if (currentMode == true) {
             toBeTranslatedTitleLabel.setForeground(Color.GREEN);
             translatedTitleLabel.setForeground(Color.RED);
             toBeTranslatedTextPane.setEditable(true);
@@ -380,7 +386,7 @@ public class MenuFrame extends javax.swing.JFrame {
             fileChooserButton.setEnabled(true);
             fileChooserButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/submitFile.png")));
             submitState = true;
-        // Morse Code -> Natural Language
+            // Morse Code -> Natural Language
         } else {
             toBeTranslatedTitleLabel.setForeground(Color.RED);
             translatedTitleLabel.setForeground(Color.GREEN);
@@ -418,9 +424,9 @@ public class MenuFrame extends javax.swing.JFrame {
                         br.close();
                         // Insertion of the file's content to the text panel
                         toBeTranslatedTextPane.setText(content.toString());
-                    } catch (Exception e) {    
+                    } catch (Exception e) {
                         javax.swing.JOptionPane.showMessageDialog(this, "An error occured while trying to read your file!", "TXT Validation", javax.swing.JOptionPane.ERROR_MESSAGE);
-                    }            
+                    }
                 }
             }
         }
@@ -432,12 +438,12 @@ public class MenuFrame extends javax.swing.JFrame {
             trans.setSubmittedText(toBeTranslatedTextPane.getText().toUpperCase());
             String translatedText = trans.translate(currentMode);
             translatedTextPane.setText(translatedText);
-        // Morse Code -> Natural Language
-        } else if(currentMode == false && !translatedTextPane.getText().isBlank()){
+            // Morse Code -> Natural Language
+        } else if (currentMode == false && !translatedTextPane.getText().isBlank()) {
             // Transmission of the message in Morse
             if (soundMode == true) {
                 Thread thd = new Thread(() -> {
-                    mediaPlay.playMessage(translatedTextPane.getText(),currentImageLabel);
+                    mediaPlay.playMessage(translatedTextPane.getText(), currentImageLabel);
                 });
                 thd.setName("mediaPlay");
                 thd.start();
@@ -448,6 +454,44 @@ public class MenuFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_translateButtonMouseClicked
 
+    private void soundModeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_soundModeButtonMouseClicked
+        // Activates/Deactivates the transmission 
+        soundMode = !soundMode;
+        // Styling of the button according to its current mode
+        if (soundMode == true) {
+            mediaPlay.resume();
+            soundModeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/soundOff.png")));
+            soundTransmitionLabel.setText("OFF");
+        } else {
+            mediaPlay.stop();
+            // Killing of the Sound Thread
+            Thread thd = getThreadByName("mediaPlayer");
+            if (thd != null) {
+                try {
+                    thd.join();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(MenuFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            // Reset of the State 
+            currentImageLabel.setIcon(null);
+            soundModeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/soundOn.png")));
+            soundTransmitionLabel.setText("ON");
+        }
+    }//GEN-LAST:event_soundModeButtonMouseClicked
+    
+    /**
+     * Method to obtain a Thread by its name.
+     * @param threadName Name of the Thread
+     * @return Thread with the provided name
+     */
+    private Thread getThreadByName(String threadName) {    
+        for (Thread t : Thread.getAllStackTraces().keySet()) {
+            if (t.getName().equals(threadName)) return t;
+        }
+        return null;
+    }
+    
     /**
      * @param args the command line arguments
      */
