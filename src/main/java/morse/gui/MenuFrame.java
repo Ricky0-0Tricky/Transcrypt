@@ -437,7 +437,7 @@ public class MenuFrame extends javax.swing.JFrame {
             // Transmission of the message in Morse
             if (soundMode == true) {
                 Thread thd = new Thread(() -> {
-                    mediaPlay.playMessage(translatedTextPane.getText());
+                    mediaPlay.playMessage(translatedTextPane.getText(),currentImageLabel);
                 });
                 thd.setName("mediaPlay");
                 thd.start();
