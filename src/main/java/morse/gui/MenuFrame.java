@@ -24,26 +24,47 @@
 package morse.gui;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.FileDialog;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JTabbedPane;
+import morse.config.Settings;
 import morse.core.Translator;
 import morse.utils.MediaPlayer;
 
 /**
- * Author: Ricky☆. Starting Date: 30/10/2025. Ending Date: ??/11/2025.
+ * Author: Ricky☆. 
+ * Starting Date: 30/10/2025. 
+ * Ending Date: ??/11/2025.
  * Description: The following class represents the menu where the end-user will
  * interact with the app itself.
  */
 public class MenuFrame extends javax.swing.JFrame {
-
+    
+    // Name of the Settings Object
+    public static String settingsFile = "settings.obj";
+    
     // Components of the App's Background Activity
     Translator trans;
     MediaPlayer mediaPlay;
+    
+    Settings sets = new Settings();
 
     // Current Translation Mode 
     boolean currentMode = true;
@@ -62,9 +83,19 @@ public class MenuFrame extends javax.swing.JFrame {
         initComponents();
         // Centralize the JFrame on the Screen
         setLocationRelativeTo(null);
-        // Inicializa as utilities necessárias
+        // Tries to load the current settings
+        try {
+            sets = sets.load(settingsFile);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(MenuFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(MenuFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        // Initialize the Components
         trans = new Translator("");
         mediaPlay = new MediaPlayer();
+        // Defines the starting styling according to the settings
+        changeVisualMode(sets.getvisualMode());
     }
 
     /**
@@ -259,6 +290,11 @@ public class MenuFrame extends javax.swing.JFrame {
         visualModeButton.setMaximumSize(new java.awt.Dimension(50, 45));
         visualModeButton.setMinimumSize(new java.awt.Dimension(50, 45));
         visualModeButton.setPreferredSize(new java.awt.Dimension(50, 45));
+        visualModeButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                visualModeButtonMousePressed(evt);
+            }
+        });
 
         currentModeLabel.setFont(new java.awt.Font("Lucida Sans Typewriter", 0, 10)); // NOI18N
         currentModeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -465,7 +501,7 @@ public class MenuFrame extends javax.swing.JFrame {
         } else {
             mediaPlay.stop();
             // Killing of the Sound Thread
-            Thread thd = getThreadByName("mediaPlayer");
+            Thread thd = getThreadByName("mediaPlay");
             if (thd != null) {
                 try {
                     thd.join();
@@ -479,6 +515,18 @@ public class MenuFrame extends javax.swing.JFrame {
             soundTransmitionLabel.setText("ON");
         }
     }//GEN-LAST:event_soundModeButtonMouseClicked
+
+    private void visualModeButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_visualModeButtonMousePressed
+        // Inverts the styling of the app and saves it
+        sets.setvisualMode(!sets.getvisualMode());
+        try {
+            sets.save(settingsFile);
+        } catch (IOException ex) {
+            Logger.getLogger(MenuFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        // Updates the current style
+        changeVisualMode(sets.getvisualMode());
+    }//GEN-LAST:event_visualModeButtonMousePressed
     
     /**
      * Method to obtain a Thread by its name.
@@ -490,6 +538,188 @@ public class MenuFrame extends javax.swing.JFrame {
             if (t.getName().equals(threadName)) return t;
         }
         return null;
+    }
+    
+    /**
+     * Method to change the Visual Mode.
+     *
+     * @param visualMode Current Visual Mode
+     */
+    public void changeVisualMode(boolean visualMode) {
+        // Activation of "Soft" Text Styling
+        System.setProperty("awt.useSystemAAFontSettings", "on");
+        System.setProperty("swing.aatext", "true");
+        // Day Mode
+        if (visualMode == true) {
+            // General Styling
+            Color bg = new Color(245, 245, 245);
+            Color panel = Color.WHITE;
+            Color text = new Color(33, 33, 33);
+            Color accent = new Color(255, 140, 0);
+            // Panels Background
+            getContentPane().setBackground(bg);
+            translatorPanel.setBackground(panel);
+            aboutPanel.setBackground(panel);
+            helpPanel.setBackground(panel);
+            // Text Panels
+            toBeTranslatedTextPane.setBackground(new Color(250, 250, 250));
+            toBeTranslatedTextPane.setForeground(text);
+            translatedTextPane.setBackground(new Color(250, 250, 250));
+            translatedTextPane.setForeground(text);
+            aboutTextArea.setBackground(new Color(250, 250, 250));
+            aboutTextArea.setForeground(text);
+            whichModeTextArea.setBackground(new Color(250, 250, 250));
+            whichModeTextArea.setForeground(text);
+            // Text Colour
+            titleLabel.setForeground(text);
+            currentModeLabel.setForeground(text);
+            visualModeTitleLabel.setForeground(text);
+            whichModeTitleLabel.setForeground(text);
+            soundTransmitionTitleLabel.setForeground(text);
+            soundTransmitionLabel.setForeground(text);
+            // Styling of Buttons
+            styleButton(modeButton, new Color(230, 230, 230), accent, text);
+            styleButton(translateButton, new Color(230, 230, 230), accent, text);
+            styleButton(fileChooserButton, new Color(230, 230, 230), accent, text);
+            styleButton(visualModeButton, new Color(230, 230, 230), accent, text);
+            styleButton(soundModeButton, new Color(230, 230, 230), accent, text);
+            // Styling of Tabbed Panel
+            styleTabbedPane(mainTabbedPanel, text, accent, bg, panel);
+            // Change of the Styles Current Icon and Label
+            currentModeLabel.setText("Night Mode");
+            visualModeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/nightMode.png")));
+        // Night Mode
+        } else {
+            // General Styling
+            Color bg = new Color(30, 30, 30);
+            Color panel = new Color(18, 18, 18);
+            Color text = new Color(220, 220, 220);
+            Color accent = new Color(0, 120, 215);
+            // Background of Panels
+            getContentPane().setBackground(bg);
+            translatorPanel.setBackground(panel);
+            aboutPanel.setBackground(panel);
+            helpPanel.setBackground(panel);
+            // Text Panels
+            toBeTranslatedTextPane.setBackground(new Color(40, 40, 40));
+            toBeTranslatedTextPane.setForeground(text);
+            translatedTextPane.setBackground(new Color(40, 40, 40));
+            translatedTextPane.setForeground(text);
+            aboutTextArea.setBackground(new Color(40, 40, 40));
+            aboutTextArea.setForeground(text);
+            whichModeTextArea.setBackground(new Color(40, 40, 40));
+            whichModeTextArea.setForeground(text);
+            // Text Colour
+            titleLabel.setForeground(text);
+            currentModeLabel.setForeground(text);
+            visualModeTitleLabel.setForeground(text);
+            whichModeTitleLabel.setForeground(text);
+            soundTransmitionTitleLabel.setForeground(text);
+            soundTransmitionLabel.setForeground(text);
+            // Styling of Buttons
+            styleButton(modeButton, new Color(50, 50, 50), accent, text);
+            styleButton(translateButton, new Color(50, 50, 50), accent, text);
+            styleButton(fileChooserButton, new Color(50, 50, 50), accent, text);
+            styleButton(visualModeButton, new Color(50, 50, 50), accent, text);
+            styleButton(soundModeButton, new Color(50, 50, 50), accent, text);
+            // Styling of Tabbed Panel
+            styleTabbedPane(mainTabbedPanel, text, accent, bg, panel);
+            // Change of the Styles Current Icon and Label
+            currentModeLabel.setText("Day Mode");
+            visualModeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/whiteMode.png")));
+        }
+    }
+
+    /**
+     * Method to Style the Buttons.
+     * 
+     * @param button Button to be stylized
+     * @param base Base Colour
+     * @param hover Hover Colour
+     * @param text Font Colour
+     */
+    private void styleButton(JButton button, Color base, Color hover, Color text) {
+        button.setBackground(base);
+        button.setForeground(text);
+        button.setFocusPainted(false);
+        button.setBorder(BorderFactory.createEmptyBorder(8, 16, 8, 16));
+        button.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        // Button Events
+        button.addMouseListener(new java.awt.event.MouseAdapter() {
+            // Mouse Entered Event
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                button.setBackground(hover);
+                button.setForeground(Color.WHITE);
+            }
+
+            // Mouse Exited Event 
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                button.setBackground(base);
+                button.setForeground(text);
+            }
+        });
+    }
+
+    /**
+     * Method to Style the Tabbed Pane.
+     * 
+     * @param tabs Tabbed Pane to be Stylized
+     * @param text Font Colour
+     * @param accent Accent Colour
+     * @param bg Background Colour
+     * @param panel Panel Colour
+     */
+    private void styleTabbedPane(JTabbedPane tabs, Color text, Color accent, Color bg, Color panel) {
+        tabs.setBackground(bg);
+        tabs.setForeground(text);
+        tabs.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        tabs.setUI(new javax.swing.plaf.basic.BasicTabbedPaneUI() {
+            @Override
+            protected void installDefaults() {
+                super.installDefaults();
+                tabInsets = new Insets(10, 20, 10, 20);
+            }
+
+            @Override
+            protected void paintTabBackground(Graphics g, int tabPlacement, int tabIndex,
+                    int x, int y, int w, int h, boolean isSelected) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                Color tabBg = isSelected ? bg : new Color(
+                        Math.min(bg.getRed() + 10, 255),
+                        Math.min(bg.getGreen() + 10, 255),
+                        Math.min(bg.getBlue() + 10, 255)
+                );
+                g2.setColor(tabBg);
+                g2.fillRect(x, y, w, h);
+                g2.dispose();
+            }
+
+            @Override
+            protected void paintTabBorder(Graphics g, int tabPlacement, int tabIndex,
+                    int x, int y, int w, int h, boolean isSelected) {
+                if (isSelected) {
+                    g.setColor(accent);
+                    g.fillRect(x, y + h - 3, w, 3);
+                }
+            }
+
+            @Override
+            protected void paintFocusIndicator(Graphics g, int tabPlacement,
+                    Rectangle[] rects, int tabIndex,
+                    Rectangle iconRect, Rectangle textRect,
+                    boolean isSelected) {
+            }
+        });
+        for (int i = 0; i < tabs.getTabCount(); i++) {
+            Component c = tabs.getComponentAt(i);
+            if (c instanceof JComponent jc) {
+                jc.setBackground(panel);
+                jc.setForeground(text);
+            }
+        }
     }
     
     /**

@@ -399,6 +399,9 @@
                   <Dimension value="[50, 45]"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="visualModeButtonMousePressed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="currentModeLabel">
               <Properties>
