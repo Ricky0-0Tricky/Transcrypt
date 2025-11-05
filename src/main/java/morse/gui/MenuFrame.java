@@ -44,6 +44,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JTabbedPane;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
 import morse.config.Settings;
 import morse.core.Translator;
 import morse.utils.MediaPlayer;
@@ -56,14 +60,14 @@ import morse.utils.MediaPlayer;
  * interact with the app itself.
  */
 public class MenuFrame extends javax.swing.JFrame {
-    
+
     // Name of the Settings Object
     public static String settingsFile = "settings.obj";
-    
+
     // Components of the App's Background Activity
     Translator trans;
     MediaPlayer mediaPlay;
-    
+
     Settings sets = new Settings();
 
     // Current Translation Mode 
@@ -96,6 +100,50 @@ public class MenuFrame extends javax.swing.JFrame {
         mediaPlay = new MediaPlayer();
         // Defines the starting styling according to the settings
         changeVisualMode(sets.getvisualMode());
+    }
+
+    /**
+     * Method to define the allowed input on the text panels .
+     */
+    public void setPanelRules() {
+        // Input Restriction of toBeTranslatedTextPane: alphanumeric and whitespaces
+        ((AbstractDocument) toBeTranslatedTextPane.getDocument())
+                .setDocumentFilter(new javax.swing.text.DocumentFilter() {
+                    @Override
+                    public void insertString(DocumentFilter.FilterBypass fb, int offset, String string, AttributeSet attr)
+                            throws BadLocationException {
+                        if (string != null && string.matches("[A-Za-z0-9 ]+")) {
+                            super.insertString(fb, offset, string, attr);
+                        }
+                    }
+
+                    @Override
+                    public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
+                            throws BadLocationException {
+                        if (text != null && text.matches("[A-Za-z0-9 ]+")) {
+                            super.replace(fb, offset, length, text, attrs);
+                        }
+                    }
+                });
+        // Input Restriction of translatedTextPane: ".", "-" e " "
+        ((AbstractDocument) translatedTextPane.getDocument())
+                .setDocumentFilter(new javax.swing.text.DocumentFilter() {
+                    @Override
+                    public void insertString(DocumentFilter.FilterBypass fb, int offset, String string, AttributeSet attr)
+                            throws BadLocationException {
+                        if (string != null && string.matches("[\\-./ ]+")) {
+                            super.insertString(fb, offset, string, attr);
+                        }
+                    }
+
+                    @Override
+                    public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
+                            throws BadLocationException {
+                        if (text != null && text.matches("[\\-./ ]+")) {
+                            super.replace(fb, offset, length, text, attrs);
+                        }
+                    }
+                });
     }
 
     /**
@@ -527,19 +575,22 @@ public class MenuFrame extends javax.swing.JFrame {
         // Updates the current style
         changeVisualMode(sets.getvisualMode());
     }//GEN-LAST:event_visualModeButtonMousePressed
-    
+
     /**
      * Method to obtain a Thread by its name.
+     *
      * @param threadName Name of the Thread
      * @return Thread with the provided name
      */
-    private Thread getThreadByName(String threadName) {    
+    private Thread getThreadByName(String threadName) {
         for (Thread t : Thread.getAllStackTraces().keySet()) {
-            if (t.getName().equals(threadName)) return t;
+            if (t.getName().equals(threadName)) {
+                return t;
+            }
         }
         return null;
     }
-    
+
     /**
      * Method to change the Visual Mode.
      *
@@ -588,7 +639,7 @@ public class MenuFrame extends javax.swing.JFrame {
             // Change of the Styles Current Icon and Label
             currentModeLabel.setText("Night Mode");
             visualModeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/nightMode.png")));
-        // Night Mode
+            // Night Mode
         } else {
             // General Styling
             Color bg = new Color(30, 30, 30);
@@ -632,7 +683,7 @@ public class MenuFrame extends javax.swing.JFrame {
 
     /**
      * Method to Style the Buttons.
-     * 
+     *
      * @param button Button to be stylized
      * @param base Base Colour
      * @param hover Hover Colour
@@ -664,7 +715,7 @@ public class MenuFrame extends javax.swing.JFrame {
 
     /**
      * Method to Style the Tabbed Pane.
-     * 
+     *
      * @param tabs Tabbed Pane to be Stylized
      * @param text Font Colour
      * @param accent Accent Colour
@@ -721,7 +772,7 @@ public class MenuFrame extends javax.swing.JFrame {
             }
         }
     }
-    
+
     /**
      * @param args the command line arguments
      */
