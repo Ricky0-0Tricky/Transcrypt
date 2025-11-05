@@ -53,7 +53,7 @@ import morse.core.Translator;
 import morse.utils.MediaPlayer;
 
 /**
- * Author: Ricky☆. 
+ * Author: Ricky☆.
  * Starting Date: 30/10/2025. 
  * Ending Date: ??/11/2025.
  * Description: The following class represents the menu where the end-user will
@@ -85,6 +85,8 @@ public class MenuFrame extends javax.swing.JFrame {
     public MenuFrame() {
         // Initialize the components
         initComponents();
+        // Input Restriction
+        setPanelRules();
         // Centralize the JFrame on the Screen
         setLocationRelativeTo(null);
         // Tries to load the current settings
@@ -100,6 +102,7 @@ public class MenuFrame extends javax.swing.JFrame {
         mediaPlay = new MediaPlayer();
         // Defines the starting styling according to the settings
         changeVisualMode(sets.getvisualMode());
+
     }
 
     /**
@@ -454,114 +457,122 @@ public class MenuFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void modeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_modeButtonMouseClicked
-        // Inverts the current translation mode
-        currentMode = !currentMode;
-        // Clears both text panels
-        toBeTranslatedTextPane.setText("");
-        translatedTextPane.setText("");
-        // Natural Language -> Morse Code
-        if (currentMode == true) {
-            toBeTranslatedTitleLabel.setForeground(Color.GREEN);
-            translatedTitleLabel.setForeground(Color.RED);
-            toBeTranslatedTextPane.setEditable(true);
-            toBeTranslatedTextPane.setFocusable(true);
-            translatedTextPane.setEditable(false);
-            translatedTextPane.setFocusable(false);
-            fileChooserButton.setEnabled(true);
-            fileChooserButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/submitFile.png")));
-            submitState = true;
-            // Morse Code -> Natural Language
-        } else {
-            toBeTranslatedTitleLabel.setForeground(Color.RED);
-            translatedTitleLabel.setForeground(Color.GREEN);
-            toBeTranslatedTextPane.setEditable(false);
-            toBeTranslatedTextPane.setFocusable(false);
-            translatedTextPane.setEditable(true);
-            translatedTextPane.setFocusable(true);
-            fileChooserButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/submitFileDisabled.png")));
-            submitState = false;
-        }
+        new Thread(() -> {
+            // Inverts the current translation mode
+            currentMode = !currentMode;
+            // Clears both text panels
+            toBeTranslatedTextPane.setText("");
+            translatedTextPane.setText("");
+            // Natural Language -> Morse Code
+            if (currentMode == true) {
+                toBeTranslatedTitleLabel.setForeground(Color.GREEN);
+                translatedTitleLabel.setForeground(Color.RED);
+                toBeTranslatedTextPane.setEditable(true);
+                toBeTranslatedTextPane.setFocusable(true);
+                translatedTextPane.setEditable(false);
+                translatedTextPane.setFocusable(false);
+                fileChooserButton.setEnabled(true);
+                fileChooserButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/submitFile.png")));
+                submitState = true;
+                // Morse Code -> Natural Language
+            } else {
+                toBeTranslatedTitleLabel.setForeground(Color.RED);
+                translatedTitleLabel.setForeground(Color.GREEN);
+                toBeTranslatedTextPane.setEditable(false);
+                toBeTranslatedTextPane.setFocusable(false);
+                translatedTextPane.setEditable(true);
+                translatedTextPane.setFocusable(true);
+                fileChooserButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/submitFileDisabled.png")));
+                submitState = false;
+            }
+        }).start();
     }//GEN-LAST:event_modeButtonMouseClicked
 
     private void fileChooserButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fileChooserButtonMouseClicked
-        if (submitState == true) {
-            // Creation and Configuration of the File Dialog
-            FileDialog fileDialog = new java.awt.FileDialog((java.awt.Frame) null);
-            fileDialog.setTitle("File Upload");
-            fileDialog.setDirectory("C:\\");
-            fileDialog.setMode(FileDialog.LOAD);
-            fileDialog.setVisible(true);
-            // Obtainment of the submitted file
-            File[] file = fileDialog.getFiles();
-            // Case when the user has selected a file
-            if (file.length != 0) {
-                // Evaluation over the validity of the file
-                if (file[0].getName().endsWith(".txt")) {
-                    try {
-                        // Reading of its contents
-                        BufferedReader br = new BufferedReader(new FileReader(file[0]));
-                        StringBuilder content = new StringBuilder();
-                        String line;
-                        while ((line = br.readLine()) != null) {
-                            content.append(line);
+        new Thread(() -> {
+            if (submitState == true) {
+                // Creation and Configuration of the File Dialog
+                FileDialog fileDialog = new java.awt.FileDialog((java.awt.Frame) null);
+                fileDialog.setTitle("File Upload");
+                fileDialog.setDirectory("C:\\");
+                fileDialog.setMode(FileDialog.LOAD);
+                fileDialog.setVisible(true);
+                // Obtainment of the submitted file
+                File[] file = fileDialog.getFiles();
+                // Case when the user has selected a file
+                if (file.length != 0) {
+                    // Evaluation over the validity of the file
+                    if (file[0].getName().endsWith(".txt")) {
+                        try {
+                            // Reading of its contents
+                            BufferedReader br = new BufferedReader(new FileReader(file[0]));
+                            StringBuilder content = new StringBuilder();
+                            String line;
+                            while ((line = br.readLine()) != null) {
+                                content.append(line);
+                            }
+                            br.close();
+                            // Insertion of the file's content to the text panel
+                            toBeTranslatedTextPane.setText(content.toString());
+                        } catch (Exception e) {
+                            javax.swing.JOptionPane.showMessageDialog(this, "An error occured while trying to read your file!", "TXT Validation", javax.swing.JOptionPane.ERROR_MESSAGE);
                         }
-                        br.close();
-                        // Insertion of the file's content to the text panel
-                        toBeTranslatedTextPane.setText(content.toString());
-                    } catch (Exception e) {
-                        javax.swing.JOptionPane.showMessageDialog(this, "An error occured while trying to read your file!", "TXT Validation", javax.swing.JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }
-        }
+        }).start();
     }//GEN-LAST:event_fileChooserButtonMouseClicked
 
     private void translateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_translateButtonMouseClicked
-        // Natural Language -> Morse Code
-        if (currentMode == true && !toBeTranslatedTextPane.getText().isBlank()) {
-            trans.setSubmittedText(toBeTranslatedTextPane.getText().toUpperCase());
-            String translatedText = trans.translate(currentMode);
-            translatedTextPane.setText(translatedText);
-            // Morse Code -> Natural Language
-        } else if (currentMode == false && !translatedTextPane.getText().isBlank()) {
-            // Transmission of the message in Morse
-            if (soundMode == true) {
-                Thread thd = new Thread(() -> {
-                    mediaPlay.playMessage(translatedTextPane.getText(), currentImageLabel);
-                });
-                thd.setName("mediaPlay");
-                thd.start();
+        new Thread(() -> {
+            // Natural Language -> Morse Code
+            if (currentMode == true && !toBeTranslatedTextPane.getText().isBlank()) {
+                trans.setSubmittedText(toBeTranslatedTextPane.getText().toUpperCase());
+                String translatedText = trans.translate(currentMode);
+                translatedTextPane.setText(translatedText);
+                // Morse Code -> Natural Language
+            } else if (currentMode == false && !translatedTextPane.getText().isBlank()) {
+                // Transmission of the message in Morse
+                if (soundMode == true) {
+                    Thread thd = new Thread(() -> {
+                        mediaPlay.playMessage(translatedTextPane.getText(), currentImageLabel);
+                    });
+                    thd.setName("mediaPlay");
+                    thd.start();
+                }
+                trans.setSubmittedText(translatedTextPane.getText().toUpperCase());
+                String translatedText = trans.translate(currentMode);
+                toBeTranslatedTextPane.setText(translatedText);
             }
-            trans.setSubmittedText(translatedTextPane.getText().toUpperCase());
-            String translatedText = trans.translate(currentMode);
-            toBeTranslatedTextPane.setText(translatedText);
-        }
+        }).start();
     }//GEN-LAST:event_translateButtonMouseClicked
 
     private void soundModeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_soundModeButtonMouseClicked
-        // Activates/Deactivates the transmission 
-        soundMode = !soundMode;
-        // Styling of the button according to its current mode
-        if (soundMode == true) {
-            mediaPlay.resume();
-            soundModeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/soundOff.png")));
-            soundTransmitionLabel.setText("OFF");
-        } else {
-            mediaPlay.stop();
-            // Killing of the Sound Thread
-            Thread thd = getThreadByName("mediaPlay");
-            if (thd != null) {
-                try {
-                    thd.join();
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(MenuFrame.class.getName()).log(Level.SEVERE, null, ex);
+        new Thread(() -> {
+            // Activates/Deactivates the transmission 
+            soundMode = !soundMode;
+            // Styling of the button according to its current mode
+            if (soundMode == true) {
+                mediaPlay.resume();
+                soundModeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/soundOff.png")));
+                soundTransmitionLabel.setText("OFF");
+            } else {
+                mediaPlay.stop();
+                // Killing of the Sound Thread
+                Thread thd = getThreadByName("mediaPlay");
+                if (thd != null) {
+                    try {
+                        thd.join();
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(MenuFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
+                // Reset of the State 
+                currentImageLabel.setIcon(null);
+                soundModeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/soundOn.png")));
+                soundTransmitionLabel.setText("ON");
             }
-            // Reset of the State 
-            currentImageLabel.setIcon(null);
-            soundModeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/soundOn.png")));
-            soundTransmitionLabel.setText("ON");
-        }
+        }).start();
     }//GEN-LAST:event_soundModeButtonMouseClicked
 
     private void visualModeButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_visualModeButtonMousePressed
@@ -573,7 +584,9 @@ public class MenuFrame extends javax.swing.JFrame {
             Logger.getLogger(MenuFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         // Updates the current style
-        changeVisualMode(sets.getvisualMode());
+        new Thread(() -> {
+            changeVisualMode(sets.getvisualMode());
+        }).start();
     }//GEN-LAST:event_visualModeButtonMousePressed
 
     /**
