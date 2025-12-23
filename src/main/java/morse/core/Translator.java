@@ -23,10 +23,12 @@
  */
 package morse.core;
 
+import morse.utils.TranslatingThread;
+
 /**
  * Author: Ricky☆. 
- * Starting Date: dd/MM/2025.
- * Ending Date: dd/MM/YYYY.
+ * Starting Date: 21/10/2025.
+ * Ending Date: 26/10/2025.
  * Description: The following class represents the Translator.
  * In charge of translations between Natural Human Language
  * and Morse Code. Noting that it's possible that this class
@@ -34,4 +36,99 @@ package morse.core;
  */
 public class Translator {
     
+    /**
+     * Submitted text to translate.
+     */
+    private String submittedText;
+    
+    /**
+     * Result of the consequent translation.
+     */
+    private String result;
+   
+    /**
+     * Parameterized Constructor.
+     * @param submittedText Submitted text to translates
+     */
+    public Translator(String submittedText) {
+        this.submittedText = submittedText;
+        this.result = "";
+    }
+    
+    /**
+     * Setter of the submitted text.
+     * @param submittedText Submitted Text to translate
+     */
+    public void setSubmittedText(String submittedText){
+        this.submittedText = submittedText.toUpperCase();
+    }
+    
+    /**
+     * Translation Method to translate 
+     * according to the users request.
+     * 
+     * @param typeTranslation Type of the requested translation
+     * @return Requested translation
+     */
+    public String translate(boolean typeTranslation){
+        // Natural Language -> Morse Code
+        if(typeTranslation == true){
+            languageToMorse();
+            return this.result;
+        } else {
+            // Morse Code -> Natural Language
+            morseToLanguage();
+            return this.result;
+        }
+    }
+
+    /**
+     * Method to translate Morse to Natural Language.
+     *
+     * @param submittedCode Submitted Morse Code
+     * @return Natural Language Translation
+     */
+    private void morseToLanguage() {
+        // Creation and Start of a Translating Thread 
+        TranslatingThread thd = new TranslatingThread(this.submittedText,false);
+        thd.start();
+        // Attempt at translating and gathering of the result 
+        try{
+            thd.join();
+            this.result = thd.result;
+        } catch(InterruptedException ex){
+            ex.printStackTrace();
+        }
+    }
+
+    /**
+     * Method to translate Natural Language to Morse.
+     *
+     * @param submittedText Submitted Text
+     * @return Morse Code Translation
+     */
+    private void languageToMorse() {
+        // Creation and Start of a Translating Thread 
+        TranslatingThread thd = new TranslatingThread(this.submittedText,true);
+        thd.start();
+        // Attempt at translating and gathering of the result 
+        try{
+            thd.join();
+            this.result = thd.result;
+        } catch(InterruptedException ex){
+            ex.printStackTrace();
+        }
+    }
+   
+    /**
+     * Method "toString"
+     * @return Object's Definitions
+     */
+    @Override
+    public String toString(){
+        return """
+               This object is an instance of the Translator class.
+               Currently with the following submitted text ->""" + this.submittedText
+                + "and result -> " + this.result + ".";
+    }
 }

@@ -23,36 +23,38 @@
  */
 package morse.tests;
 
-import java.awt.FileDialog;
-import java.io.File;
-import morse.utils.FileManager;
+import morse.core.Translator;
 
 /**
  * Author: Ricky☆. 
- * Starting Date: 20/10/2025.
- * Ending Date: 26/10/2025 (I think).
+ * Starting Date: 26/10/2025.
+ * Ending Date: 26/10/2025.
  * Description: The following class pretends to carry out
- * tests on the class "FileManager" with the intent of
+ * tests on the class "Translator" with the intent of
  * guaranteeing the predicted behaviour is assured.
  */
-public class FileManagerTest {
+public class TranslatorTest {
+    /**
+     * Translator.
+     */
+    Translator trans;
 
     /**
-     * File Manager.
+     * Natural Language String.
      */
-    FileManager fileMan;
-
+    String naturalStr = "Hello World";
+    
     /**
-     * Names of the Files that will be played.
+     * Morse Code String. 
      */
-    String[] fileNames = {"dit.wav", "dah.wav"};
-
+    String morseCode = ".... . .-.. .-.. --- /.-- --- .-. .-.. -.. ";
+    
     /**
      * Default Constructor.
      *
      * @throws Exception Possible Exception
      */
-    public FileManagerTest() throws Exception {
+    public TranslatorTest() throws Exception {
         setupClass();
     }
 
@@ -62,7 +64,7 @@ public class FileManagerTest {
      * @throws Exception Possible Exception
      */
     public void setupClass() throws Exception {
-        this.fileMan = new FileManager();
+        this.trans = new Translator(morseCode);
     }
 
     /**
@@ -71,47 +73,29 @@ public class FileManagerTest {
      * @throws Exception Possible Exception
      */
     public void tearDownClass() throws Exception {
-        this.fileMan = null;
+        this.trans = null;
     }
 
     /**
-     * Method to test the ability of the File Manager to save a given file in
-     * memory.
+     * Method to test the ability of the Translator to translate a natural
+     * looking text to morse code.
      *
-     * @param submittedFile
      * @throws Exception Possible Exception
      */
-    public void testSaving(File submittedFile) throws Exception {
-        boolean result = this.fileMan.saveFile(submittedFile);
-        System.out.println("Saved the File? -> " + result);
-        // Force the submition of a valid file 
-        if(result == false){
-            getFile();
-        }
+    public void testNaturalToMorse() throws Exception {
+        String result = trans.translate(true);
+        System.out.println("The original string was " + this.naturalStr + "\nand the result was " + result);
     }
-
+    
     /**
-     * Method to obtain the desired file.
-     * 
+     * Method to test the ability of the Translator to translate morse 
+     * code into natural language.
+     *
      * @throws Exception Possible Exception
      */
-    public void getFile() throws Exception {
-        FileDialog fileDialog = new java.awt.FileDialog((java.awt.Frame) null);
-        fileDialog.setDirectory("C:\\");
-        fileDialog.setMode(FileDialog.LOAD);
-        fileDialog.setVisible(true);
-        // Obtain the file selected by the user
-        File[] file = fileDialog.getFiles();
-        // Case where the user chose a file
-        if (file.length != 0) {
-            // Check if the chosen file is in a valid format
-            if (file[0].getName().endsWith(".wav") || 
-                file[0].getName().endsWith(".mp3") || 
-                file[0].getName().endsWith(".aac") || 
-                file[0].getName().endsWith(".fac")) {
-                testSaving(file[0]);
-            }
-        }
+    public void testMorseToNatural() throws Exception {
+        String result = trans.translate(false);
+        System.out.println("The original string was " + this.morseCode + "\nand the result was " + result);
     }
 
     /**
@@ -121,7 +105,7 @@ public class FileManagerTest {
      * @throws Exception Possible Exception
      */
     public static void main(String[] args) throws Exception {
-        FileManagerTest test = new FileManagerTest();
-        test.getFile();
+        TranslatorTest test = new TranslatorTest();
+        test.testMorseToNatural();
     }
 }

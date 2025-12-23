@@ -36,7 +36,11 @@ import java.util.Hashtable;
 /**
  * Author: Ricky☆. 
  * Starting Date: 20/10/2025. 
+<<<<<<< HEAD
+ * Ending Date: 24/10/2025.
+=======
  * Ending Date: dd/MM/YYYY.
+>>>>>>> master
  * Description: The following class represents the Settings of the app itself.
  * It is supposed to hold things like the current UI theme the user has chosen
  * and the current sounds the user has uploaded.
@@ -166,4 +170,8 @@ public class Settings implements Serializable {
     
     // Serial UID
     public static final long serialVersionUID = 1L;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> master

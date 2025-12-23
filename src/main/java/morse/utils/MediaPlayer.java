@@ -30,11 +30,12 @@ import java.util.logging.Logger;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.swing.JLabel;
 
 /**
  * Author: Ricky☆. 
  * Starting Date: 02/10/2025. 
- * Ending Date: dd/MM/YYYY.
+ * Ending Date: dd/MM/2025.
  * Description: The following class represents a Media Player. 
  * As its name implies, it is responsible for playing media files 
  * in the likes of .AIFF, .AU or .WAV formats.
@@ -49,17 +50,23 @@ public class MediaPlayer {
     /**
      * Method to transmit a message.
      * @param message Message in String format
+     * @param currentState State of Transmission
      */
-    public void playMessage(String message) {
+    public void playMessage(String message, JLabel currentState) {
         // Cycle to go through every single char in the message
         for (int i = 0; i < message.length(); i++) {
             // Translation of the current char
             switch (message.charAt(i)) {
-                case '.' -> playSound("dah.wav");
-                case '-' -> playSound("dit.wav");
-                default -> {
+                case '.':
+                    playSound("dah.wav");
+                    currentState.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dah.png")));
+                    break;
+                case '-':
+                    playSound("dit.wav");
+                    currentState.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dit.png")));
+                    break;
+                default:
                     continue;
-                }
             }
             // Condition to check if it's possible to analyze the next char
             if (i + 1 < message.length()) {
@@ -80,6 +87,8 @@ public class MediaPlayer {
                 }
             }
         }
+        // Reset of the State 
+        currentState.setIcon(null);
     }
 
     /**

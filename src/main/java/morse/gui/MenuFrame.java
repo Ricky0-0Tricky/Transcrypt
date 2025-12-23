@@ -1,0 +1,853 @@
+/*
+ * The MIT License
+ *
+ * Copyright 2025 Ricky☆.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+package morse.gui;
+
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.FileDialog;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JTabbedPane;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
+import morse.config.Settings;
+import morse.core.Translator;
+import morse.utils.MediaPlayer;
+
+/**
+ * Author: Ricky☆.
+ * Starting Date: 30/10/2025. 
+ * Ending Date: ??/11/2025.
+ * Description: The following class represents the menu where the end-user will
+ * interact with the app itself.
+ */
+public class MenuFrame extends javax.swing.JFrame {
+
+    // Name of the Settings Object
+    public static String settingsFile = "settings.obj";
+
+    // Components of the App's Background Activity
+    Translator trans;
+    MediaPlayer mediaPlay;
+
+    Settings sets = new Settings();
+
+    // Current Translation Mode 
+    boolean currentMode = true;
+
+    // Current Sound Transmission Mode
+    boolean soundMode = true;
+
+    // File Submission State
+    boolean submitState = true;
+
+    /**
+     * Creates new form MenuFrame
+     */
+    public MenuFrame() {
+        // Initialize the components
+        initComponents();
+        // Input Restriction
+        setPanelRules();
+        // Centralize the JFrame on the Screen
+        setLocationRelativeTo(null);
+        // Tries to load the current settings
+        try {
+            sets = sets.load(settingsFile);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(MenuFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(MenuFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        // Initialize the Components
+        trans = new Translator("");
+        mediaPlay = new MediaPlayer();
+        // Defines the starting styling according to the settings
+        changeVisualMode(sets.getvisualMode());
+
+    }
+
+    /**
+     * Method to define the allowed input on the text panels .
+     */
+    public void setPanelRules() {
+        // Input Restriction of toBeTranslatedTextPane: alphanumeric and whitespaces
+        ((AbstractDocument) toBeTranslatedTextPane.getDocument())
+                .setDocumentFilter(new javax.swing.text.DocumentFilter() {
+                    @Override
+                    public void insertString(DocumentFilter.FilterBypass fb, int offset, String string, AttributeSet attr)
+                            throws BadLocationException {
+                        if (string != null && string.matches("[A-Za-z0-9 ]+")) {
+                            super.insertString(fb, offset, string, attr);
+                        }
+                    }
+
+                    @Override
+                    public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
+                            throws BadLocationException {
+                        if (text != null && text.matches("[A-Za-z0-9 ]+")) {
+                            super.replace(fb, offset, length, text, attrs);
+                        }
+                    }
+                });
+        // Input Restriction of translatedTextPane: ".", "-" e " "
+        ((AbstractDocument) translatedTextPane.getDocument())
+                .setDocumentFilter(new javax.swing.text.DocumentFilter() {
+                    @Override
+                    public void insertString(DocumentFilter.FilterBypass fb, int offset, String string, AttributeSet attr)
+                            throws BadLocationException {
+                        if (string != null && string.matches("[\\-./ ]+")) {
+                            super.insertString(fb, offset, string, attr);
+                        }
+                    }
+
+                    @Override
+                    public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
+                            throws BadLocationException {
+                        if (text != null && text.matches("[\\-./ ]+")) {
+                            super.replace(fb, offset, length, text, attrs);
+                        }
+                    }
+                });
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        mainTabbedPanel = new javax.swing.JTabbedPane();
+        translatorPanel = new javax.swing.JPanel();
+        translatedScrollPane = new javax.swing.JScrollPane();
+        translatedTextPane = new javax.swing.JTextPane();
+        toBeTranslatedScrollPane = new javax.swing.JScrollPane();
+        toBeTranslatedTextPane = new javax.swing.JTextPane();
+        modeButton = new javax.swing.JButton();
+        translateButton = new javax.swing.JButton();
+        fileChooserButton = new javax.swing.JButton();
+        toBeTranslatedTitleLabel = new javax.swing.JLabel();
+        titleLabel = new javax.swing.JLabel();
+        translatedTitleLabel = new javax.swing.JLabel();
+        currentImageLabel = new javax.swing.JLabel();
+        arrowsImage = new javax.swing.JLabel();
+        aboutPanel = new javax.swing.JPanel();
+        aboutScrollPane = new javax.swing.JScrollPane();
+        aboutTextArea = new javax.swing.JTextArea();
+        helpPanel = new javax.swing.JPanel();
+        visualModeTitleLabel = new javax.swing.JLabel();
+        visualModeButton = new javax.swing.JButton();
+        currentModeLabel = new javax.swing.JLabel();
+        whichModeTitleLabel = new javax.swing.JLabel();
+        whichModeScrollPane = new javax.swing.JScrollPane();
+        whichModeTextArea = new javax.swing.JTextArea();
+        soundTransmitionLabel = new javax.swing.JLabel();
+        soundTransmitionTitleLabel = new javax.swing.JLabel();
+        soundModeButton = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Transcrypt");
+        setIconImage(new ImageIcon(getClass().getResource("/images/mainIcon.png")).getImage());
+        setResizable(false);
+
+        translatedTextPane.setEditable(false);
+        translatedTextPane.setFocusable(false);
+        translatedScrollPane.setViewportView(translatedTextPane);
+
+        toBeTranslatedScrollPane.setToolTipText("");
+        toBeTranslatedScrollPane.setViewportView(toBeTranslatedTextPane);
+
+        modeButton.setText("Change Mode");
+        modeButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                modeButtonMouseClicked(evt);
+            }
+        });
+
+        translateButton.setText("Translate");
+        translateButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                translateButtonMouseClicked(evt);
+            }
+        });
+
+        fileChooserButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/submitFile.png"))); // NOI18N
+        fileChooserButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                fileChooserButtonMouseClicked(evt);
+            }
+        });
+
+        toBeTranslatedTitleLabel.setFont(new java.awt.Font("Lucida Sans Unicode", 0, 12)); // NOI18N
+        toBeTranslatedTitleLabel.setForeground(new java.awt.Color(0, 255, 0));
+        toBeTranslatedTitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        toBeTranslatedTitleLabel.setText("Natural Language");
+
+        titleLabel.setFont(new java.awt.Font("Lucida Sans Typewriter", 0, 12)); // NOI18N
+        titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        titleLabel.setText("Morse Code Translator");
+        titleLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        translatedTitleLabel.setFont(new java.awt.Font("Lucida Sans Typewriter", 0, 12)); // NOI18N
+        translatedTitleLabel.setForeground(new java.awt.Color(255, 0, 0));
+        translatedTitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        translatedTitleLabel.setText("Morse");
+
+        currentImageLabel.setFocusable(false);
+        currentImageLabel.setRequestFocusEnabled(false);
+        currentImageLabel.setVerifyInputWhenFocusTarget(false);
+
+        arrowsImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/translationArrows.png"))); // NOI18N
+
+        javax.swing.GroupLayout translatorPanelLayout = new javax.swing.GroupLayout(translatorPanel);
+        translatorPanel.setLayout(translatorPanelLayout);
+        translatorPanelLayout.setHorizontalGroup(
+            translatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(translatorPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(toBeTranslatedScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(translatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(translatorPanelLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(arrowsImage)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(translatorPanelLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(currentImageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addComponent(translatedScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(translatorPanelLayout.createSequentialGroup()
+                .addGap(89, 89, 89)
+                .addComponent(modeButton)
+                .addGap(18, 18, 18)
+                .addComponent(translateButton)
+                .addGap(27, 27, 27)
+                .addComponent(fileChooserButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(translatorPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(toBeTranslatedTitleLabel)
+                .addGap(26, 26, 26)
+                .addComponent(titleLabel)
+                .addGap(42, 42, 42)
+                .addComponent(translatedTitleLabel)
+                .addGap(102, 102, 102))
+        );
+        translatorPanelLayout.setVerticalGroup(
+            translatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, translatorPanelLayout.createSequentialGroup()
+                .addGroup(translatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, translatorPanelLayout.createSequentialGroup()
+                        .addGap(13, 13, 13)
+                        .addComponent(translatedTitleLabel))
+                    .addGroup(translatorPanelLayout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addComponent(toBeTranslatedTitleLabel))
+                    .addGroup(translatorPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(titleLabel)))
+                .addGroup(translatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(translatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(toBeTranslatedScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(translatedScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(translatorPanelLayout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(currentImageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(arrowsImage)))
+                .addGap(15, 15, 15)
+                .addGroup(translatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(fileChooserButton)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, translatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(translateButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(modeButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(23, 23, 23))
+        );
+
+        mainTabbedPanel.addTab("Translator", translatorPanel);
+
+        aboutTextArea.setEditable(false);
+        aboutTextArea.setColumns(20);
+        aboutTextArea.setRows(8);
+        aboutTextArea.setText("                                      Morse Code Translator\n\n-Purpose/Development of the App\n\nThis app pretends to translate natural language to morse code and\nvice-versa so any person, when in need of such tool, can do it \nwithout constraints of Network or Hardware.\n\n-How to use it?\n\nThis app is pretty simple to operate being that the user can either \nwrite himself the text or morse code that wants translated or can \nsubmit a text file to translate itself. Apart from that there is also the\noption to listen/see the message being transmited in real time.");
+        aboutTextArea.setFocusable(false);
+        aboutScrollPane.setViewportView(aboutTextArea);
+
+        javax.swing.GroupLayout aboutPanelLayout = new javax.swing.GroupLayout(aboutPanel);
+        aboutPanel.setLayout(aboutPanelLayout);
+        aboutPanelLayout.setHorizontalGroup(
+            aboutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(aboutPanelLayout.createSequentialGroup()
+                .addGap(70, 70, 70)
+                .addComponent(aboutScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(62, 62, 62))
+        );
+        aboutPanelLayout.setVerticalGroup(
+            aboutPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(aboutPanelLayout.createSequentialGroup()
+                .addGap(6, 6, 6)
+                .addComponent(aboutScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6))
+        );
+
+        mainTabbedPanel.addTab("About", aboutPanel);
+
+        visualModeTitleLabel.setFont(new java.awt.Font("Lucida Sans Unicode", 0, 14)); // NOI18N
+        visualModeTitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        visualModeTitleLabel.setText("Visual Mode");
+
+        visualModeButton.setMaximumSize(new java.awt.Dimension(50, 45));
+        visualModeButton.setMinimumSize(new java.awt.Dimension(50, 45));
+        visualModeButton.setPreferredSize(new java.awt.Dimension(50, 45));
+        visualModeButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                visualModeButtonMousePressed(evt);
+            }
+        });
+
+        currentModeLabel.setFont(new java.awt.Font("Lucida Sans Typewriter", 0, 10)); // NOI18N
+        currentModeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        currentModeLabel.setText("Day Mode");
+
+        whichModeTitleLabel.setFont(new java.awt.Font("Lucida Sans Unicode", 0, 14)); // NOI18N
+        whichModeTitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        whichModeTitleLabel.setText("How do I know which mode I'm using?");
+
+        whichModeTextArea.setEditable(false);
+        whichModeTextArea.setColumns(20);
+        whichModeTextArea.setFont(new java.awt.Font("Lucida Sans Unicode", 0, 12)); // NOI18N
+        whichModeTextArea.setRows(5);
+        whichModeTextArea.setText("If you want to know which language you are currently translating from \nand to, just check the titles: the green one indicates the source language \n(from) and the red one indicates the target language (to).");
+        whichModeTextArea.setFocusable(false);
+        whichModeScrollPane.setViewportView(whichModeTextArea);
+
+        soundTransmitionLabel.setFont(new java.awt.Font("Lucida Sans Typewriter", 0, 10)); // NOI18N
+        soundTransmitionLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        soundTransmitionLabel.setText("OFF");
+
+        soundTransmitionTitleLabel.setFont(new java.awt.Font("Lucida Sans Unicode", 0, 14)); // NOI18N
+        soundTransmitionTitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        soundTransmitionTitleLabel.setText("Sound");
+
+        soundModeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/soundOff.png"))); // NOI18N
+        soundModeButton.setMaximumSize(new java.awt.Dimension(50, 45));
+        soundModeButton.setMinimumSize(new java.awt.Dimension(50, 45));
+        soundModeButton.setPreferredSize(new java.awt.Dimension(50, 45));
+        soundModeButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                soundModeButtonMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout helpPanelLayout = new javax.swing.GroupLayout(helpPanel);
+        helpPanel.setLayout(helpPanelLayout);
+        helpPanelLayout.setHorizontalGroup(
+            helpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(helpPanelLayout.createSequentialGroup()
+                .addGroup(helpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(helpPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(helpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(helpPanelLayout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(whichModeScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(whichModeTitleLabel)))
+                    .addGroup(helpPanelLayout.createSequentialGroup()
+                        .addGap(128, 128, 128)
+                        .addGroup(helpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(visualModeTitleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(helpPanelLayout.createSequentialGroup()
+                                .addGap(35, 35, 35)
+                                .addGroup(helpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(currentModeLabel)
+                                    .addComponent(visualModeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(57, 57, 57)
+                        .addGroup(helpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(helpPanelLayout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(soundModeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(soundTransmitionTitleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(helpPanelLayout.createSequentialGroup()
+                                .addGap(20, 20, 20)
+                                .addComponent(soundTransmitionLabel)))))
+                .addContainerGap(22, Short.MAX_VALUE))
+        );
+        helpPanelLayout.setVerticalGroup(
+            helpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(helpPanelLayout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addGroup(helpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(visualModeTitleLabel)
+                    .addComponent(soundTransmitionTitleLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(helpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(visualModeButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(soundModeButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(helpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(currentModeLabel)
+                    .addComponent(soundTransmitionLabel))
+                .addGap(28, 28, 28)
+                .addComponent(whichModeTitleLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(whichModeScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(37, Short.MAX_VALUE))
+        );
+
+        mainTabbedPanel.addTab("Help", helpPanel);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(mainTabbedPanel)
+                .addGap(0, 0, 0))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(mainTabbedPanel)
+                .addGap(0, 0, 0))
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void modeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_modeButtonMouseClicked
+        new Thread(() -> {
+            // Inverts the current translation mode
+            currentMode = !currentMode;
+            // Clears both text panels
+            toBeTranslatedTextPane.setText("");
+            translatedTextPane.setText("");
+            // Natural Language -> Morse Code
+            if (currentMode == true) {
+                toBeTranslatedTitleLabel.setForeground(Color.GREEN);
+                translatedTitleLabel.setForeground(Color.RED);
+                toBeTranslatedTextPane.setEditable(true);
+                toBeTranslatedTextPane.setFocusable(true);
+                translatedTextPane.setEditable(false);
+                translatedTextPane.setFocusable(false);
+                fileChooserButton.setEnabled(true);
+                fileChooserButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/submitFile.png")));
+                submitState = true;
+                // Morse Code -> Natural Language
+            } else {
+                toBeTranslatedTitleLabel.setForeground(Color.RED);
+                translatedTitleLabel.setForeground(Color.GREEN);
+                toBeTranslatedTextPane.setEditable(false);
+                toBeTranslatedTextPane.setFocusable(false);
+                translatedTextPane.setEditable(true);
+                translatedTextPane.setFocusable(true);
+                fileChooserButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/submitFileDisabled.png")));
+                submitState = false;
+            }
+        }).start();
+    }//GEN-LAST:event_modeButtonMouseClicked
+
+    private void fileChooserButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fileChooserButtonMouseClicked
+        new Thread(() -> {
+            if (submitState == true) {
+                // Creation and Configuration of the File Dialog
+                FileDialog fileDialog = new java.awt.FileDialog((java.awt.Frame) null);
+                fileDialog.setTitle("File Upload");
+                fileDialog.setDirectory("C:\\");
+                fileDialog.setMode(FileDialog.LOAD);
+                fileDialog.setVisible(true);
+                // Obtainment of the submitted file
+                File[] file = fileDialog.getFiles();
+                // Case when the user has selected a file
+                if (file.length != 0) {
+                    // Evaluation over the validity of the file
+                    if (file[0].getName().endsWith(".txt")) {
+                        try {
+                            // Reading of its contents
+                            BufferedReader br = new BufferedReader(new FileReader(file[0]));
+                            StringBuilder content = new StringBuilder();
+                            String line;
+                            while ((line = br.readLine()) != null) {
+                                content.append(line);
+                            }
+                            br.close();
+                            // Insertion of the file's content to the text panel
+                            toBeTranslatedTextPane.setText(content.toString());
+                        } catch (Exception e) {
+                            javax.swing.JOptionPane.showMessageDialog(this, "An error occured while trying to read your file!", "TXT Validation", javax.swing.JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                }
+            }
+        }).start();
+    }//GEN-LAST:event_fileChooserButtonMouseClicked
+
+    private void translateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_translateButtonMouseClicked
+        new Thread(() -> {
+            // Natural Language -> Morse Code
+            if (currentMode == true && !toBeTranslatedTextPane.getText().isBlank()) {
+                trans.setSubmittedText(toBeTranslatedTextPane.getText().toUpperCase());
+                String translatedText = trans.translate(currentMode);
+                translatedTextPane.setText(translatedText);
+                // Morse Code -> Natural Language
+            } else if (currentMode == false && !translatedTextPane.getText().isBlank()) {
+                // Transmission of the message in Morse
+                if (soundMode == true) {
+                    Thread thd = new Thread(() -> {
+                        mediaPlay.playMessage(translatedTextPane.getText(), currentImageLabel);
+                    });
+                    thd.setName("mediaPlay");
+                    thd.start();
+                }
+                trans.setSubmittedText(translatedTextPane.getText().toUpperCase());
+                String translatedText = trans.translate(currentMode);
+                toBeTranslatedTextPane.setText(translatedText);
+            }
+        }).start();
+    }//GEN-LAST:event_translateButtonMouseClicked
+
+    private void soundModeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_soundModeButtonMouseClicked
+        new Thread(() -> {
+            // Activates/Deactivates the transmission 
+            soundMode = !soundMode;
+            // Styling of the button according to its current mode
+            if (soundMode == true) {
+                mediaPlay.resume();
+                soundModeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/soundOff.png")));
+                soundTransmitionLabel.setText("OFF");
+            } else {
+                mediaPlay.stop();
+                // Killing of the Sound Thread
+                Thread thd = getThreadByName("mediaPlay");
+                if (thd != null) {
+                    try {
+                        thd.join();
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(MenuFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                // Reset of the State 
+                currentImageLabel.setIcon(null);
+                soundModeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/soundOn.png")));
+                soundTransmitionLabel.setText("ON");
+            }
+        }).start();
+    }//GEN-LAST:event_soundModeButtonMouseClicked
+
+    private void visualModeButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_visualModeButtonMousePressed
+        // Inverts the styling of the app and saves it
+        sets.setvisualMode(!sets.getvisualMode());
+        try {
+            sets.save(settingsFile);
+        } catch (IOException ex) {
+            Logger.getLogger(MenuFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        // Updates the current style
+        new Thread(() -> {
+            changeVisualMode(sets.getvisualMode());
+        }).start();
+    }//GEN-LAST:event_visualModeButtonMousePressed
+
+    /**
+     * Method to obtain a Thread by its name.
+     *
+     * @param threadName Name of the Thread
+     * @return Thread with the provided name
+     */
+    private Thread getThreadByName(String threadName) {
+        for (Thread t : Thread.getAllStackTraces().keySet()) {
+            if (t.getName().equals(threadName)) {
+                return t;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Method to change the Visual Mode.
+     *
+     * @param visualMode Current Visual Mode
+     */
+    public void changeVisualMode(boolean visualMode) {
+        // Activation of "Soft" Text Styling
+        System.setProperty("awt.useSystemAAFontSettings", "on");
+        System.setProperty("swing.aatext", "true");
+        // Day Mode
+        if (visualMode == true) {
+            // General Styling
+            Color bg = new Color(245, 245, 245);
+            Color panel = Color.WHITE;
+            Color text = new Color(33, 33, 33);
+            Color accent = new Color(255, 140, 0);
+            // Panels Background
+            getContentPane().setBackground(bg);
+            translatorPanel.setBackground(panel);
+            aboutPanel.setBackground(panel);
+            helpPanel.setBackground(panel);
+            // Text Panels
+            toBeTranslatedTextPane.setBackground(new Color(250, 250, 250));
+            toBeTranslatedTextPane.setForeground(text);
+            translatedTextPane.setBackground(new Color(250, 250, 250));
+            translatedTextPane.setForeground(text);
+            aboutTextArea.setBackground(new Color(250, 250, 250));
+            aboutTextArea.setForeground(text);
+            whichModeTextArea.setBackground(new Color(250, 250, 250));
+            whichModeTextArea.setForeground(text);
+            // Text Colour
+            titleLabel.setForeground(text);
+            currentModeLabel.setForeground(text);
+            visualModeTitleLabel.setForeground(text);
+            whichModeTitleLabel.setForeground(text);
+            soundTransmitionTitleLabel.setForeground(text);
+            soundTransmitionLabel.setForeground(text);
+            // Styling of Buttons
+            styleButton(modeButton, new Color(230, 230, 230), accent, text);
+            styleButton(translateButton, new Color(230, 230, 230), accent, text);
+            styleButton(fileChooserButton, new Color(230, 230, 230), accent, text);
+            styleButton(visualModeButton, new Color(230, 230, 230), accent, text);
+            styleButton(soundModeButton, new Color(230, 230, 230), accent, text);
+            // Styling of Tabbed Panel
+            styleTabbedPane(mainTabbedPanel, text, accent, bg, panel);
+            // Change of the Styles Current Icon and Label
+            currentModeLabel.setText("Night Mode");
+            visualModeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/nightMode.png")));
+            // Night Mode
+        } else {
+            // General Styling
+            Color bg = new Color(30, 30, 30);
+            Color panel = new Color(18, 18, 18);
+            Color text = new Color(220, 220, 220);
+            Color accent = new Color(0, 120, 215);
+            // Background of Panels
+            getContentPane().setBackground(bg);
+            translatorPanel.setBackground(panel);
+            aboutPanel.setBackground(panel);
+            helpPanel.setBackground(panel);
+            // Text Panels
+            toBeTranslatedTextPane.setBackground(new Color(40, 40, 40));
+            toBeTranslatedTextPane.setForeground(text);
+            translatedTextPane.setBackground(new Color(40, 40, 40));
+            translatedTextPane.setForeground(text);
+            aboutTextArea.setBackground(new Color(40, 40, 40));
+            aboutTextArea.setForeground(text);
+            whichModeTextArea.setBackground(new Color(40, 40, 40));
+            whichModeTextArea.setForeground(text);
+            // Text Colour
+            titleLabel.setForeground(text);
+            currentModeLabel.setForeground(text);
+            visualModeTitleLabel.setForeground(text);
+            whichModeTitleLabel.setForeground(text);
+            soundTransmitionTitleLabel.setForeground(text);
+            soundTransmitionLabel.setForeground(text);
+            // Styling of Buttons
+            styleButton(modeButton, new Color(50, 50, 50), accent, text);
+            styleButton(translateButton, new Color(50, 50, 50), accent, text);
+            styleButton(fileChooserButton, new Color(50, 50, 50), accent, text);
+            styleButton(visualModeButton, new Color(50, 50, 50), accent, text);
+            styleButton(soundModeButton, new Color(50, 50, 50), accent, text);
+            // Styling of Tabbed Panel
+            styleTabbedPane(mainTabbedPanel, text, accent, bg, panel);
+            // Change of the Styles Current Icon and Label
+            currentModeLabel.setText("Day Mode");
+            visualModeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/whiteMode.png")));
+        }
+    }
+
+    /**
+     * Method to Style the Buttons.
+     *
+     * @param button Button to be stylized
+     * @param base Base Colour
+     * @param hover Hover Colour
+     * @param text Font Colour
+     */
+    private void styleButton(JButton button, Color base, Color hover, Color text) {
+        button.setBackground(base);
+        button.setForeground(text);
+        button.setFocusPainted(false);
+        button.setBorder(BorderFactory.createEmptyBorder(8, 16, 8, 16));
+        button.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        // Button Events
+        button.addMouseListener(new java.awt.event.MouseAdapter() {
+            // Mouse Entered Event
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                button.setBackground(hover);
+                button.setForeground(Color.WHITE);
+            }
+
+            // Mouse Exited Event 
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                button.setBackground(base);
+                button.setForeground(text);
+            }
+        });
+    }
+
+    /**
+     * Method to Style the Tabbed Pane.
+     *
+     * @param tabs Tabbed Pane to be Stylized
+     * @param text Font Colour
+     * @param accent Accent Colour
+     * @param bg Background Colour
+     * @param panel Panel Colour
+     */
+    private void styleTabbedPane(JTabbedPane tabs, Color text, Color accent, Color bg, Color panel) {
+        tabs.setBackground(bg);
+        tabs.setForeground(text);
+        tabs.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        tabs.setUI(new javax.swing.plaf.basic.BasicTabbedPaneUI() {
+            @Override
+            protected void installDefaults() {
+                super.installDefaults();
+                tabInsets = new Insets(10, 20, 10, 20);
+            }
+
+            @Override
+            protected void paintTabBackground(Graphics g, int tabPlacement, int tabIndex,
+                    int x, int y, int w, int h, boolean isSelected) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                Color tabBg = isSelected ? bg : new Color(
+                        Math.min(bg.getRed() + 10, 255),
+                        Math.min(bg.getGreen() + 10, 255),
+                        Math.min(bg.getBlue() + 10, 255)
+                );
+                g2.setColor(tabBg);
+                g2.fillRect(x, y, w, h);
+                g2.dispose();
+            }
+
+            @Override
+            protected void paintTabBorder(Graphics g, int tabPlacement, int tabIndex,
+                    int x, int y, int w, int h, boolean isSelected) {
+                if (isSelected) {
+                    g.setColor(accent);
+                    g.fillRect(x, y + h - 3, w, 3);
+                }
+            }
+
+            @Override
+            protected void paintFocusIndicator(Graphics g, int tabPlacement,
+                    Rectangle[] rects, int tabIndex,
+                    Rectangle iconRect, Rectangle textRect,
+                    boolean isSelected) {
+            }
+        });
+        for (int i = 0; i < tabs.getTabCount(); i++) {
+            Component c = tabs.getComponentAt(i);
+            if (c instanceof JComponent jc) {
+                jc.setBackground(panel);
+                jc.setForeground(text);
+            }
+        }
+    }
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(MenuFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(MenuFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(MenuFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(MenuFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new MenuFrame().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel aboutPanel;
+    private javax.swing.JScrollPane aboutScrollPane;
+    private javax.swing.JTextArea aboutTextArea;
+    private javax.swing.JLabel arrowsImage;
+    private javax.swing.JLabel currentImageLabel;
+    private javax.swing.JLabel currentModeLabel;
+    private javax.swing.JButton fileChooserButton;
+    private javax.swing.JPanel helpPanel;
+    private javax.swing.JTabbedPane mainTabbedPanel;
+    private javax.swing.JButton modeButton;
+    private javax.swing.JButton soundModeButton;
+    private javax.swing.JLabel soundTransmitionLabel;
+    private javax.swing.JLabel soundTransmitionTitleLabel;
+    private javax.swing.JLabel titleLabel;
+    private javax.swing.JScrollPane toBeTranslatedScrollPane;
+    private javax.swing.JTextPane toBeTranslatedTextPane;
+    private javax.swing.JLabel toBeTranslatedTitleLabel;
+    private javax.swing.JButton translateButton;
+    private javax.swing.JScrollPane translatedScrollPane;
+    private javax.swing.JTextPane translatedTextPane;
+    private javax.swing.JLabel translatedTitleLabel;
+    private javax.swing.JPanel translatorPanel;
+    private javax.swing.JButton visualModeButton;
+    private javax.swing.JLabel visualModeTitleLabel;
+    private javax.swing.JScrollPane whichModeScrollPane;
+    private javax.swing.JTextArea whichModeTextArea;
+    private javax.swing.JLabel whichModeTitleLabel;
+    // End of variables declaration//GEN-END:variables
+}

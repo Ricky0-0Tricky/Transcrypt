@@ -26,7 +26,7 @@ package morse.utils;
 /**
  * Author: Ricky☆. 
  * Starting Date: 02/10/2025.
- * Ending Date: dd/MM/YYYY.
+ * Ending Date: 26/10/2025.
  * Description: The following class represents a Timer.
  * It is supposed to time events such as media playing 
  * intervals (dits and dahs).
