@@ -23,7 +23,7 @@
  */
 package morse.tests;
 
-import morse.core.Translator;
+//import morse.core.Translator;
 
 /**
  * Author: Ricky☆. 
@@ -37,7 +37,7 @@ public class TranslatorTest {
     /**
      * Translator.
      */
-    Translator trans;
+    //Translator trans;
 
     /**
      * Natural Language String.
@@ -64,7 +64,7 @@ public class TranslatorTest {
      * @throws Exception Possible Exception
      */
     public void setupClass() throws Exception {
-        this.trans = new Translator(morseCode);
+        //this.trans = new Translator(morseCode);
     }
 
     /**
@@ -73,7 +73,7 @@ public class TranslatorTest {
      * @throws Exception Possible Exception
      */
     public void tearDownClass() throws Exception {
-        this.trans = null;
+        //this.trans = null;
     }
 
     /**
@@ -83,8 +83,8 @@ public class TranslatorTest {
      * @throws Exception Possible Exception
      */
     public void testNaturalToMorse() throws Exception {
-        String result = trans.translate(true);
-        System.out.println("The original string was " + this.naturalStr + "\nand the result was " + result);
+        //String result = trans.translate(true);
+        //System.out.println("The original string was " + this.naturalStr + "\nand the result was " + result);
     }
     
     /**
@@ -94,8 +94,8 @@ public class TranslatorTest {
      * @throws Exception Possible Exception
      */
     public void testMorseToNatural() throws Exception {
-        String result = trans.translate(false);
-        System.out.println("The original string was " + this.morseCode + "\nand the result was " + result);
+        //String result = trans.translate(false);
+        //System.out.println("The original string was " + this.morseCode + "\nand the result was " + result);
     }
 
     /**

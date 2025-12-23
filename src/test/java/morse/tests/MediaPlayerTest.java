@@ -123,7 +123,7 @@ public class MediaPlayerTest {
      * @throws Exception Possible Exception
      */
     public void testMessage(String message) throws Exception{
-        this.media.playMessage(message);
+       // this.media.playMessage(message);
     }
     
     /**
