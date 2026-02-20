@@ -2,7 +2,7 @@
 
 ![Java](https://img.shields.io/badge/Java-19%2B-blue) 
 ![License: MIT](https://img.shields.io/badge/License-MIT-green) 
-![Status](https://img.shields.io/badge/Status-Active%20Development-orange)
+![Status](https://img.shields.io/badge/Status-Finished%20-red)
 
 **Transcrypt** is a **Java-based Morse code translator** with natural language support.  
 It lets you convert text ↔ Morse, play messages as **audible beeps**, and switch between **Day/Night modes** for accessibility.  
