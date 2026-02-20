@@ -70,15 +70,3 @@ Great for learning Morse code
 Useful for fun projects and demonstrations
 
 Designed with clean, modular Java code
-
-### 🔭 Future Ideas
-Export Morse messages as audio files
-
-Adjustable beep frequency & playback speed
-
-Practice mode for Morse learners
-
-Multiplayer “Morse chat” over sockets
-
-### 🌐 Project Description
-**Transcrypt** is a **Java-based Morse** code translator with natural language support. It converts Text ↔ Morse, transmits messages as **beeps**, and includes a **day/night mode** for accessibility. Designed as an educational and practical tool, it makes learning and using Morse code simple and interactive.
